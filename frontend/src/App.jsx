@@ -1,15 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from "react";
+import SingleManage from './page/SingleManage'
+import UserManage from './page/UserManage'
+import ReportManage from "./page/ReportManage";
+import SetofManage from "./page/SetofManage";
+
+import { BrowserRouter, Routes, Route , Link } from "react-router-dom";
 
 function App() {
 
   return (
-    <>
-      <p className="text-4xl">
-        Hello world
-      </p>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/singlemanage" element={<SingleManage />}></Route>
+        <Route path="/usermanage" element={<UserManage />}></Route>
+        <Route path="/reportmanage" element={<ReportManage />}></Route>
+        <Route path="/setofmanage" element={<SetofManage />}></Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
