@@ -3,6 +3,7 @@ import SingleManage from './page/SingleManage'
 import UserManage from './page/UserManage'
 import ReportManage from "./page/ReportManage";
 import SetofManage from "./page/SetofManage";
+import CreateSingle from "./page/CreateSingle";
 
 import { BrowserRouter, Routes, Route , Link } from "react-router-dom";
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="/usermanage" element={<UserManage />}></Route>
         <Route path="/reportmanage" element={<ReportManage />}></Route>
         <Route path="/setofmanage" element={<SetofManage />}></Route>
+        <Route path="/createsingle" element={<CreateSingle />}></Route>
       </Routes>
     </BrowserRouter>
   )
