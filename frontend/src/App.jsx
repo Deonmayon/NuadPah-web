@@ -4,6 +4,8 @@ import UserManage from './page/UserManage'
 import ReportManage from "./page/ReportManage";
 import SetofManage from "./page/SetofManage";
 import CreateSingle from "./page/CreateSingle";
+import EditUser from "./page/EditUser";
+import EditReport from "./page/EditReport";
 
 import { BrowserRouter, Routes, Route , Link } from "react-router-dom";
 
@@ -17,6 +19,8 @@ function App() {
         <Route path="/reportmanage" element={<ReportManage />}></Route>
         <Route path="/setofmanage" element={<SetofManage />}></Route>
         <Route path="/createsingle" element={<CreateSingle />}></Route>
+        <Route path="/edituser" element={<EditUser />}></Route>
+        <Route path="/editreport" element={<EditReport />}></Route>
       </Routes>
     </BrowserRouter>
   )

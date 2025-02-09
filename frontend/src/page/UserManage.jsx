@@ -12,6 +12,8 @@ function UserManage() {
       email: "john@example.com",
       role: "admin",
       formattedCreatedAt: "2025-01-01",
+      eventimage: "event1.jpg",
+
     },
     {
       _id: "2",
@@ -19,6 +21,7 @@ function UserManage() {
       email: "jane@example.com",
       role: "user",
       formattedCreatedAt: "2025-02-01",
+      eventimage: "event1.jpg",
     },
     {
       _id: "3",
@@ -26,6 +29,7 @@ function UserManage() {
       email: "alice@example.com",
       role: "user",
       formattedCreatedAt: "2025-03-01",
+      eventimage: "event1.jpg",
     },
     {
       _id: "4",
@@ -33,6 +37,7 @@ function UserManage() {
       email: "bob@example.com",
       role: "admin",
       formattedCreatedAt: "2025-04-01",
+      eventimage: "event1.jpg",
     },
     {
       _id: "5",
@@ -40,6 +45,7 @@ function UserManage() {
       email: "emma@example.com",
       role: "user",
       formattedCreatedAt: "2025-05-01",
+      eventimage: "event1.jpg",
     },
     // เพิ่มข้อมูลเพิ่มเติมหากจำเป็น
   ];
@@ -175,13 +181,26 @@ function UserManage() {
                 {currentUsers.map((user, index) => (
                   <React.Fragment key={index}>
                     <tr className="text-white border-y border-solid border-[#191414] hidden md:table-row hover:bg-[#2B2B2B] transition-all duration-300">
-                      <td className="h-[70px] table-cell text-left align-middle px-4">
-                        {user.username}
+                      <td className="max-w-[90px] sm:max-w-[130px] md:max-w-[200px] h-[70px] table-cell text-left align-middle px-4">
+                        <div className="flex items-center">
+                          <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#1DB954] rounded-full flex justify-center items-center mr-[8px]">
+                            <img
+                              key={index}
+                              src={"./images/" + user.eventimage}
+                              alt="Event"
+                              className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-full"
+                            />
+                          </div>
+                          <p className="truncate overflow-hidden whitespace-nowrap">
+                            {user.username}
+                          </p>
+                        </div>
                       </td>
+                      
                       <td className="h-[70px] table-cell text-left align-middle px-4">
                         {user.email}
                       </td>
-                      
+
                       <td className="h-[70px] table-cell text-left align-middle px-4">
                         {user.formattedCreatedAt}
                       </td>
@@ -214,7 +233,6 @@ function UserManage() {
                       </td>
                       <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
                         <div className="flex items-center text-white justify-end">
-                          
                           <button
                             onClick={() => togglePopup(user)}
                             className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#1DB954] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#1CAA4E]"
