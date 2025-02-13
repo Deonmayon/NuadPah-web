@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import Navmenu from "../components/Navmenu";
@@ -7,32 +8,35 @@ import { Link, useNavigate } from "react-router-dom";
 
 function EditSingleMassge() {
   const [image1, setImage1] = useState(null);
-  const [allImage, setAllImage] = useState(null);
+  const [editData, setEditData] = useState({});
   const [previewImage1, setPreviewImage1] = useState(null);
-  
-  const [namemassage, setNamemassage] = useState("");
-  const [detailmassage, setDetailmassage] = useState("");
-  const [typemassage, setTypemassage] = useState("");
-  const [time, setTime] = useState("");
-  const [round, setRound] = useState("");
-  const [imagemassage, setImagemassage] = useState("");
+
+  // const [namemassage, setNamemassage] = useState("");
+  // const [detailmassage, setDetailmassage] = useState("");
+  // const [typemassage, setTypemassage] = useState("");
+  // const [time, setTime] = useState("");
+  // const [round, setRound] = useState("");
+  // const [imagemassage, setImagemassage] = useState("");
 
   const navigate = useNavigate();
 
-  const mockEvents = [
-    { id: 1, namemassage: "Rock Festival", detailmassage: "hhhsafsdfsdfsdsf", typemassage: "back", time: "5", round: "10", imagemassage: "event1.jpg" }
-    ];
-
   useEffect(() => {
-    // Mockup data
-    setNamemassage(mockEvents[0].namemassage);
-    setDetailmassage(mockEvents[0].detailmassage);
-    setTypemassage(mockEvents[0].typemassage);
-    setTime(mockEvents[0].time);
-    setRound(mockEvents[0].round);
-    setImagemassage(mockEvents[0].imagemassage);
+    GetSelectedMassage();
   }, []);
 
+  const GetSelectedMassage = () => {
+    const oldData = JSON.parse(localStorage.getItem("edit_massage_id"));
+    console.log(oldData);
+
+    setEditData(oldData);
+  };
+
+  const handleInput = (event) => {
+    setEditData((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
   const onInputChange1 = (e) => {
     const file = e.target.files[0];
@@ -50,38 +54,37 @@ function EditSingleMassge() {
     }
   };
 
-  const handleUpdate = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const updateData = {
-        namemassage,
-        detailmassage,
-        typemassage,
-        time,
-        round,
-    };
+    // const updateData = {
+    //   namemassage,
+    //   detailmassage,
+    //   typemassage,
+    //   time,
+    //   round,
+    // };
 
-    const formData = new FormData();
+    // const formData = new FormData();
 
-    // Append image1 only if it exists
-    if (image1) {
-      formData.append("imagemassage", image1);
-    }
+    // // Append image1 only if it exists
+    // if (image1) {
+    //   formData.append("imagemassage", image1);
+    // }
 
+    // // Append other updateData fields
+    // for (let key in updateData) {
+    //   formData.append(key, updateData[key]);
+    // }
 
-    // Append other updateData fields
-    for (let key in updateData) {
-      formData.append(key, updateData[key]);
-    }
-
-    axios
-      .put("http://localhost:3002/update-event/" + id, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
-      .then((res) => {
-        window.location.reload();
-      })
-      .catch((err) => console.log(err));
+    // axios
+    //   .put("http://localhost:3002/update-event/" + id, formData, {
+    //     headers: { "Content-Type": "multipart/form-data" },
+    //   })
+    //   .then((res) => {
+    //     window.location.reload();
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -105,7 +108,7 @@ function EditSingleMassge() {
             </div>
           </div>
           <form
-            onSubmit={handleUpdate}
+            onSubmit={handleSubmit}
             className="mt-[10px] rounded-md bg-white w-full h-full pt-[20px] text-[14px] "
           >
             <div className="hidden md:flex w-full h-full">
@@ -120,7 +123,7 @@ function EditSingleMassge() {
                     />
                   ) : (
                     <img
-                      src={"/images/" + imagemassage}
+                      src={image1}
                       alt="Event"
                       className="object-cover h-full w-full rounded-md"
                     />
@@ -138,9 +141,8 @@ function EditSingleMassge() {
                 <p className="mb-[10px] text-black">Name Massage</p>
                 <input
                   type="text"
-                  value={namemassage}
-                  onChange={(e) => setNamemassage(e.target.value)}
-                  name="namemassage"
+                  onChange={handleInput}
+                  name="mt_name"
                   placeholder="Name Massage"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -148,9 +150,8 @@ function EditSingleMassge() {
                 <p className="mt-[15px] mb-[10px] text-black">Detail</p>
                 <textarea
                   type="text"
-                  value={detailmassage}
-                  onChange={(e) => setDetailmassage(e.target.value)}
-                  name="eventdetail"
+                  onChange={handleInput}
+                  name="mt_detail"
                   className="w-full pl-2 pt-2 rounded-md bg-[#DBDBDB] text-black focus:outline-none
                   focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                   id=""
@@ -159,9 +160,8 @@ function EditSingleMassge() {
                 ></textarea>
                 <p className="mt-[15px] mb-[10px] text-black">Type</p>
                 <select
-                    value={typemassage}
-                  onChange={(e) => setTypemassage(e.target.value)}
-                  name="eventtype"
+                  onChange={handleInput}
+                  name="mt_type"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
@@ -172,9 +172,8 @@ function EditSingleMassge() {
                 </select>
                 <p className="mt-[15px] mb-[10px] text-black">Time</p>
                 <select
-                value={time}
-                  onChange={(e) => setTime(e.target.value)}
-                  name="eventtype"
+                  onChange={handleInput}
+                  name="mt_time"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
@@ -188,9 +187,8 @@ function EditSingleMassge() {
                 <p className="mt-[15px] mb-[10px] text-black">Round</p>
                 <input
                   type="number"
-                  value={round}
-                  onChange={(e) => setRound(e.target.value)}
-                  name="locationname"
+                  onChange={handleInput}
+                  name="mt_round"
                   placeholder="Type Number"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -201,22 +199,22 @@ function EditSingleMassge() {
                 </button>
               </div>
             </div>
-            <div className="block md:hidden w-full h-full text-white text-[14px] font-medium">
+            {/* <div className="block md:hidden w-full h-full text-white text-[14px] font-medium">
               <p className="mb-[10px] text-black">Image</p>
               <div className="w-full  rounded-md aspect-square bg-[#DBDBDB] my-[10px] relative">
                 {previewImage1 ? (
-                    <img
-                      src={previewImage1}
-                      alt="Preview 1"
-                      className="object-cover h-full w-full rounded-md"
-                    />
-                  ) : (
-                    <img
-                      src={"/images/" + imagemassage}
-                      alt="Event"
-                      className="object-cover h-full w-full rounded-md"
-                    />
-                  )}
+                  <img
+                    src={previewImage1}
+                    alt="Preview 1"
+                    className="object-cover h-full w-full rounded-md"
+                  />
+                ) : (
+                  <img
+                    src={"/images/" + imagemassage}
+                    alt="Event"
+                    className="object-cover h-full w-full rounded-md"
+                  />
+                )}
               </div>
               <input
                 type="file"
@@ -229,8 +227,7 @@ function EditSingleMassge() {
               <p className="mt-[15px] mb-[10px] text-black">Name Massage</p>
               <input
                 type="text"
-                value={namemassage}
-                onChange={(e) => setNamemassage(e.target.value)}
+                onChange={handleInput}
                 name="namemassage"
                 placeholder="Name Massage"
                 className="h-[40px] w-full rounded-md pl-2 focus:outline-none bg-[#DBDBDB] text-black
@@ -279,8 +276,7 @@ function EditSingleMassge() {
               <p className="mt-[15px] mb-[10px] text-black">Round</p>
               <input
                 type="number"
-                value={round}
-                onChange={(e) => setRound(e.target.value)}
+                onChange={handleInput}
                 name="round"
                 placeholder="Type Number"
                 className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
@@ -293,7 +289,7 @@ function EditSingleMassge() {
               >
                 Save
               </button>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>

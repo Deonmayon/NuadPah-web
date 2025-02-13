@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import Navmenu from "../components/Navmenu";
@@ -7,29 +9,19 @@ import { Link, useNavigate } from "react-router-dom";
 
 function CreateSingle() {
   const [image1, setImage1] = useState(null);
-  const [allImage, setAllImage] = useState(null);
   const [previewImage1, setPreviewImage1] = useState(null);
-  const [values, setValue] = useState({
-    namemassage: "",
-    detailmassage: "",
-    typemassage: "",
-    time: "",
-    round: "",
+  const [createData, setCreateData] = useState({
+    mt_name: "",
+    mt_detail: "",
+    mt_type: "",
+    mt_time: "",
+    mt_round: "",
   });
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Mockup data
-    const mockEvents = [
-      { id: 1, eventname: "Rock Festival", eventimage: "event1.jpg" },
-      { id: 2, eventname: "Jazz Night", eventimage: "event2.jpg" },
-    ];
-    setAllImage(mockEvents);
-  }, []);
-
   const handleInput = (event) => {
-    setValue((prev) => ({
+    setCreateData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -51,18 +43,37 @@ function CreateSingle() {
     }
   };
 
-  const submitImage = (e) => {
+  const submitImage = async (e) => {
     e.preventDefault();
 
-    const formData = {
-      eventimage: image1,
-      ...values,
-    };
+    try {
+      const formData = new FormData();
+      formData.append("image", image1);
+      const upload_response = await axios.post(
+        "http://localhost:3000/image/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      createData.mt_image_name = upload_response.data.data;
+
+      const db_response = await axios.post(
+        "http://localhost:3000/admin/add-single-massage",
+        createData
+      );
+      console.log(db_response.data.data);
+
+      alert("Event created successfully!");
+      navigate("/singlemanage");
+    } catch (error) {
+      console.error("Error adding single massage:", error);
+    }
 
     // Mock response and navigation
-    console.log("Event Submitted:", formData);
-    alert("Event created successfully!");
-    navigate("/singlemanage");
   };
 
   return (
@@ -121,7 +132,7 @@ function CreateSingle() {
                 <input
                   type="text"
                   onChange={handleInput}
-                  name="namemassage"
+                  name="mt_name"
                   placeholder="Name Massage"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -130,7 +141,7 @@ function CreateSingle() {
                 <textarea
                   type="text"
                   onChange={handleInput}
-                  name="detailmassage"
+                  name="mt_detail"
                   className="w-full pl-2 pt-2 rounded-md bg-[#DBDBDB] text-black focus:outline-none
                   focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                   id=""
@@ -140,7 +151,7 @@ function CreateSingle() {
                 <p className="mt-[15px] mb-[10px] text-black">Type</p>
                 <select
                   onChange={handleInput}
-                  name="typemassage"
+                  name="mt_type"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
@@ -149,10 +160,10 @@ function CreateSingle() {
                   <option value="shoulder">Shoulder</option>
                   <option value="neck">Neck</option>
                 </select>
-                <p className="mt-[15px] mb-[10px] text-black">Time</p>
+                <p className="mt-[15px] mb-[10px] text-black">Learning Time</p>
                 <select
                   onChange={handleInput}
-                  name="time"
+                  name="mt_time"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
@@ -167,7 +178,7 @@ function CreateSingle() {
                 <input
                   type="number"
                   onChange={handleInput}
-                  name="round"
+                  name="mt_round"
                   placeholder="Type Number"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -208,7 +219,7 @@ function CreateSingle() {
               <input
                 type="text"
                 onChange={handleInput}
-                name="namemassage"
+                name="mt_name"
                 placeholder="Name Massage"
                 className="h-[40px] w-full rounded-md pl-2 focus:outline-none bg-[#DBDBDB] text-black
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -219,7 +230,7 @@ function CreateSingle() {
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 type="text"
                 onChange={handleInput}
-                name="detailmassage"
+                name="mt_detail"
                 id=""
                 rows="8"
                 placeholder="Tell about massage"
@@ -227,7 +238,7 @@ function CreateSingle() {
               <p className="mt-[15px] mb-[10px] text-black">Type</p>
               <select
                 onChange={handleInput}
-                name="typemassage"
+                name="mt_type"
                 className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
               >
@@ -236,10 +247,10 @@ function CreateSingle() {
                 <option value="shoulder">Shoulder</option>
                 <option value="neck">Neck</option>
               </select>
-              <p className="mt-[15px] mb-[10px] text-black">Time</p>
+              <p className="mt-[15px] mb-[10px] text-black">mt_time</p>
               <select
                 onChange={handleInput}
-                name="time"
+                name="mt_time"
                 className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
               >
@@ -254,7 +265,7 @@ function CreateSingle() {
               <input
                 type="number"
                 onChange={handleInput}
-                name="round"
+                name="mt_round"
                 placeholder="Type Number"
                 className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"

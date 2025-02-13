@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import IconCom from "../components/IconCom";
 import Nav from "../components/Nav";
 import Navmenu from "../components/Navmenu";
@@ -7,25 +8,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 function SingleManage() {
   const navigate = useNavigate();
-  const mockdata = [
-    {
-      _id: "1",
-      namemassage: "Name Massage",
-      time: "5",
-      typemassage: "Back",
-      image: "https://picsum.photos/id/19/200/200",
-      formattedCreatedAt: "2025-02-01",
-    },
-    {
-      _id: "2",
-      namemassage: "Name Massage",
-      time: "15",
-      typemassage: "Shoulder",
-      image: "https://picsum.photos/id/13/200/200",
-      formattedCreatedAt: "2025-02-01",
-    },
-  ];
-
   const [data, setData] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,11 +23,36 @@ function SingleManage() {
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
-    // Simulate fetching data
-    setTimeout(() => {
-      setData(mockdata);
-    }, 500);
+    GetSingleMassageList();
   }, []);
+
+  const GetSingleMassageList = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/massage/single-list"
+      );
+      console.log(response.data.data);
+
+      const res_data = response.data.data;
+
+      const signedImages = await Promise.all(
+        res_data.map(async (massage) => {
+          const load_response = await axios.get(
+            `http://localhost:3000/image/download/${massage.mt_image_name}`
+          );
+          const res_data = load_response.data.data;
+          return { ...massage, mt_image_name: res_data };
+        })
+      );
+      setData(signedImages);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // useEffect(() => {
+  //   GetSingleMassageList();
+  // }, []);
 
   const togglePopup = (event) => {
     setShowPopup(!showPopup);
@@ -71,7 +78,7 @@ function SingleManage() {
     togglePopup();
     const confirmed = window.confirm("Are you sure to delete this event?");
     if (confirmed) {
-      setData((prevData) => prevData.filter((event) => event._id !== id));
+      setData((prevData) => prevData.filter((event) => event.mt_id !== id));
     }
   };
 
@@ -135,13 +142,13 @@ function SingleManage() {
                   Name
                 </th>
                 <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
-                  Time
+                  Learning Time
                 </th>
                 <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
                   Type
                 </th>
                 <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
-                  Created At
+                  Round
                 </th>
                 <th className="h-[70px] table-cell text-left align-middle px-4"></th>
               </tr>
@@ -155,24 +162,24 @@ function SingleManage() {
                         <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
                           <img
                             key={index}
-                            src={event.image}
+                            src={event.mt_image_name}
                             alt="Event"
                             className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
                           />
                         </div>
                         <p className="truncate overflow-hidden whitespace-nowrap">
-                          {event.namemassage}
+                          {event.mt_name}
                         </p>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
-                      {`${event.time} minutes`}
+                      {`${event.mt_time} minutes`}
                     </td>
                     <td className="h-[70px] text-black table-cell text-left align-middle px-4 text-[13px] font-medium">
-                      {event.typemassage}
+                      {event.mt_type}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
-                      {event.formattedCreatedAt}
+                      {event.mt_round}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex justify-end">
@@ -183,13 +190,19 @@ function SingleManage() {
                           <IconCom icon="edit" />
                         </Link> */}
                         <button
-                          onClick={() => navigate(`/editsinglemassage`)}
+                          onClick={() => {
+                            localStorage.setItem(
+                              "edit_massage_id",
+                              JSON.stringify(event)
+                            );
+                            navigate(`/editsinglemassage`);
+                          }}
                           className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7d6137] cursor-pointer"
                         >
                           <IconCom icon="edit" />
                         </button>
                         <button
-                          onClick={() => handleDelete(event._id)}
+                          onClick={() => handleDelete(event.mt_id)}
                           className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C] cursor-pointer"
                         >
                           <IconCom icon="trash" />
@@ -206,22 +219,22 @@ function SingleManage() {
                         <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
                           <img
                             key={index}
-                            src={"./images/" + event.image}
+                            src={"./mt_image_names/" + event.mt_image_name}
                             alt="Event"
                             className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
                           />
                         </div>
                         <div className="flex flex-col max-w-[120px] ">
                           <p className="text-black truncate overflow-hidden whitespace-nowrap">
-                            {event.namemassage}
+                            {event.mt_name}
                           </p>
-                          <p className="font-extralight">{event.time}</p>
+                          <p className="font-extralight">{event.mt_time}</p>
                         </div>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
                       <div className="flex items-center text-black justify-end">
-                        {event.typemassage}
+                        {event.mt_type}
                         <button
                           onClick={() => togglePopup(event)}
                           className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] text-white rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
@@ -279,7 +292,7 @@ function SingleManage() {
               <Link
                 to={
                   selectedEvent
-                    ? `/editsinglemassage/${selectedEvent._id}`
+                    ? `/editsinglemassage/${selectedEvent.mt_id}`
                     : "#"
                 }
                 onClick={handleEdit}
@@ -289,7 +302,9 @@ function SingleManage() {
                 <p className="ml-[10px] text-[16px] font-medium">Edit</p>
               </Link>
               <button
-                onClick={() => selectedEvent && handleDelete(selectedEvent._id)}
+                onClick={() =>
+                  selectedEvent && handleDelete(selectedEvent.mt_id)
+                }
                 className="transition-all duration-300 flex w-full items-center px-4 py-3 text-sm text-left bg-[#FF5757] rounded-md hover:bg-[#FF5757]"
               >
                 <IconCom icon="trash" />
