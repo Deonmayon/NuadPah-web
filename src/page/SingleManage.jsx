@@ -3,9 +3,10 @@ import IconCom from "../components/IconCom";
 import Nav from "../components/Nav";
 import Navmenu from "../components/Navmenu";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SingleManage() {
+  const navigate = useNavigate();
   const mockdata = [
     {
       _id: "1",
@@ -18,7 +19,7 @@ function SingleManage() {
     {
       _id: "2",
       namemassage: "Name Massage",
-      time: "5",
+      time: "15",
       typemassage: "Shoulder",
       image: "https://picsum.photos/id/13/200/200",
       formattedCreatedAt: "2025-02-01",
@@ -148,7 +149,7 @@ function SingleManage() {
             <tbody className="table-row-group">
               {currentEvents.map((event, index) => (
                 <React.Fragment key={index}>
-                  <tr className="text-black border-y border-solid border-[#C0A172] hidden md:table-row hover:bg-[#DBDBDB] transition-all duration-300">
+                  <tr className="text-black border-y border-solid border-[#C0A172] hidden md:table-row transition-all duration-300">
                     <td className="max-w-[90px] sm:max-w-[130px] md:max-w-[200px] h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex items-center">
                         <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
@@ -175,15 +176,21 @@ function SingleManage() {
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex justify-end">
-                        <Link
+                        {/* <Link
                           to={`/editsinglemassage`}
                           className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
                         >
                           <IconCom icon="edit" />
-                        </Link>
+                        </Link> */}
+                        <button
+                          onClick={() => navigate(`/editsinglemassage`)}
+                          className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7d6137] cursor-pointer"
+                        >
+                          <IconCom icon="edit" />
+                        </button>
                         <button
                           onClick={() => handleDelete(event._id)}
-                          className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C]"
+                          className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C] cursor-pointer"
                         >
                           <IconCom icon="trash" />
                         </button>

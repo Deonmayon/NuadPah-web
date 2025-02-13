@@ -14,7 +14,6 @@ function EditUser() {
   const [username, setUsername] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
@@ -27,14 +26,15 @@ function EditUser() {
       username: "John",
       lastname: "Doe",
       email: "johndoe@example.com",
-      role: "user",
+      image:
+        "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
     };
 
     setInitialUsername(mockUserData.username);
     setUsername(mockUserData.username);
     setLastname(mockUserData.lastname);
     setEmail(mockUserData.email);
-    setRole(mockUserData.role);
+    setPreviewImage1(mockUserData.image); // Set the initial image preview
   }, [id]);
 
   const onInputChange1 = (e) => {
@@ -58,20 +58,17 @@ function EditUser() {
 
     const updateData = {
       username,
+      lastname,
       email,
-      role,
+      image,
     };
 
     if (password.trim() !== "") {
       updateData.password = password; // Include password only if it's not empty
     }
 
-    axios
-      .put("http://localhost:3002/update/" + id, updateData)
-      .then((res) => {
-        window.location.reload();
-      })
-      .catch((err) => console.log(err));
+    // Simulate updating user data
+    console.log("Updated user data:", updateData);
   };
 
   return (
