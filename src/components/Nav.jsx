@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import IconCom from "./IconCom";
-import { useNavigate , Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function Nav() {
   const [name, setName] = useState("");
@@ -49,10 +49,10 @@ function Nav() {
     >
       <div className="max-w-[1440px] mx-auto h-full bg-[#C0A172] px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[60px]">
+          <a href="/">
+            <img src="/images/logo.png" className="w-[50px]" alt="" />
+          </a>
           <div className="flex items-center">
-            <a href="/">
-              <img src="/images/logo.png" className="w-[50px]" alt="" />
-            </a>
             <Link
               to="/singlemanage"
               className={`h-full ml-[20px] transition-all duration-100 px-3 py-2 text-[12px] sm:text-[14px] md:text-[18px] ${
