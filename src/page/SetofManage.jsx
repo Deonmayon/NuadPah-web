@@ -11,44 +11,15 @@ function SetofManage() {
   const mockEvents = [
     {
       _id: "1",
-      eventname: "Name set of massage",
-      artistname: "5",
-      eventtype: "back , neck , shoulder",
-      eventimage: "event1.jpg",
-      eventimage2: "event1.jpg",
-      eventimage3: "event1.jpg",
+      nameset: "Name set of massage",
+      time: "5",
+      typemassage: "back , neck , shoulder",
+      image1: "event1.jpg",
+      image2: "event1.jpg",
+      image3: "event1.jpg",
       formattedCreatedAt: "2025-02-01",
     },
-    {
-      _id: "2",
-      eventname: "Name set of massage",
-      artistname: "10",
-      eventtype: "back , neck , shoulder",
-      eventimage: "event2.jpg",
-      eventimage2: "event1.jpg",
-      eventimage3: "event1.jpg",
-      formattedCreatedAt: "2025-01-20",
-    },
-    {
-      _id: "3",
-      eventname: "Name set of massage",
-      artistname: "15",
-      eventtype: "back , neck , shoulder",
-      eventimage: "event3.jpg",
-      eventimage2: "event1.jpg",
-      eventimage3: "event1.jpg",
-      formattedCreatedAt: "2025-01-15",
-    },
-    {
-      _id: "4",
-      eventname: "Name set of massage",
-      artistname: "7",
-      eventtype: "back , neck , shoulder",
-      eventimage: "event4.jpg",
-      eventimage2: "event1.jpg",
-      eventimage3: "event1.jpg",
-      formattedCreatedAt: "2025-01-10",
-    },
+    
   ];
 
   
@@ -113,7 +84,7 @@ function SetofManage() {
             </p>
             <Link
               to="/createevent"
-              className="min-h-[40px] max-h-[40px] h-full px-2 bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium transition-all duration-300 hover:bg-[#1CAA4E]"
+              className="min-h-[40px] max-h-[40px] h-full px-2 bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium transition-all duration-300 hover:bg-[#C0A172]"
             >
               + Create Set of Massage
             </Link>
@@ -178,17 +149,17 @@ function SetofManage() {
                   <tr className="text-black border-y border-solid border-[#C0A172] hidden md:table-row hover:bg-[#DBDBDB] transition-all duration-300">
                     <td className="max-w-[90px] sm:max-w-[130px] md:max-w-[200px] h-[110px] table-cell text-left align-middle px-4">
                       <div className="flex items-center">
-                        <div className="min-h-[90px] min-w-[90px] max-h-[90px] max-w-[90px] w-full h-full bg-[#1DB954] rounded-lg justify-start items-start mr-[8px]">
+                        <div className="min-h-[90px] min-w-[90px] max-h-[90px] max-w-[90px] w-full h-full bg-[#C0A172] rounded-lg justify-start items-start mr-[8px]">
                           <div className="min-h-[45px] min-w-[90px] max-h-[45px] max-w-[90px] w-full h-full bg-[#C0A172] rounded-t-lg flex justify-start items-start">
                             <img
                               key={index}
-                              src={"./images/" + event.eventimage}
+                              src={"./images/" + event.image1}
                               alt="Event"
                               className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
                             />
                             <img
                               key={index}
-                              src={"./images/" + event.eventimage}
+                              src={"./images/" + event.image2}
                               alt="Event"
                               className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
                             />
@@ -196,22 +167,22 @@ function SetofManage() {
                           <div className="min-h-[45px] min-w-[90px] max-h-[45px] max-w-[90px] w-full h-full bg-black rounded-b-lg flex justify-center items-center">
                             <img
                               key={index}
-                              src={"./images/" + event.eventimage}
+                              src={"./images/" + event.image3}
                               alt="Event"
                               className="object-cover min-h-[45px] min-w-[90px] h-full w-full rounded-md"
                             />
                           </div>
                         </div>
                         <p className="truncate overflow-hidden whitespace-nowrap">
-                          {event.eventname}
+                          {event.nameset}
                         </p>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
-                      {`${event.artistname} minutes`}
+                      {`${event.time} minutes`}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
-                      {event.eventtype}
+                      {event.typemassage}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       {event.formattedCreatedAt}
@@ -237,27 +208,43 @@ function SetofManage() {
                     key={index}
                     className="table-row md:hidden border-y border-solid border-[#C0A172] hover:bg-[#DBDBDB]"
                   >
-                    <td className="h-[70px] table-cell text-left align-middle px-4">
+                    <td className="h-[110px] table-cell text-left align-middle px-4">
                       <div className="flex">
-                        <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
-                          <img
-                            key={index}
-                            src={"./images/" + event.eventimage}
-                            alt="Event"
-                            className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
-                          />
+                      <div className="min-h-[90px] min-w-[90px] max-h-[90px] max-w-[90px] w-full h-full bg-[#1DB954] rounded-lg justify-start items-start mr-[8px]">
+                          <div className="min-h-[45px] min-w-[90px] max-h-[45px] max-w-[90px] w-full h-full bg-[#C0A172] rounded-t-lg flex justify-start items-start">
+                            <img
+                              key={index}
+                              src={"./images/" + event.image1}
+                              alt="Event"
+                              className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
+                            />
+                            <img
+                              key={index}
+                              src={"./images/" + event.image2}
+                              alt="Event"
+                              className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
+                            />
+                          </div>
+                          <div className="min-h-[45px] min-w-[90px] max-h-[45px] max-w-[90px] w-full h-full bg-black rounded-b-lg flex justify-center items-center">
+                            <img
+                              key={index}
+                              src={"./images/" + event.image3}
+                              alt="Event"
+                              className="object-cover min-h-[45px] min-w-[90px] h-full w-full rounded-md"
+                            />
+                          </div>
                         </div>
-                        <div className="flex flex-col max-w-[120px] ">
+                        <div className="flex flex-col max-w-[160px] justify-center">
                           <p className="text-black truncate overflow-hidden whitespace-nowrap">
-                            {event.eventname}
+                            {event.nameset}
                           </p>
-                          <p className="font-extralight text-black">{`${event.artistname} minutes`}</p>
+                          <p className="font-extralight text-black">{`${event.time} minutes`}</p>
                         </div>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
                       <div className="flex items-center text-black justify-end">
-                       {event.eventtype}
+                       {event.typemassage}
                         <button
                           onClick={() => togglePopup(event)}
                           className="ml-4 min-h-[40px] min-w-[40px] text-white max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"

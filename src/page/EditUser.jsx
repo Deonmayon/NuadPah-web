@@ -134,8 +134,8 @@ function EditUser() {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  name="locationprovice"
-                  placeholder="Provice"
+                  name="First Name"
+                  placeholder="First Name"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                       focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 />
@@ -148,8 +148,8 @@ function EditUser() {
                   type="text"
                   value={lastname}
                   onChange={(e) => setLastname(e.target.value)}
-                  name="locationcountry"
-                  placeholder="Country"
+                  name="Last Name"
+                  placeholder="Last Name"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                       focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 />
@@ -163,6 +163,7 @@ function EditUser() {
               className="h-[40px] w-full rounded-md my-[10px] pl-2 focus:outline-none bg-[#DBDBDB] text-black
               focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
               value={email}
+              placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
             />
 

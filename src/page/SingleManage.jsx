@@ -3,107 +3,26 @@ import IconCom from "../components/IconCom";
 import Nav from "../components/Nav";
 import Navmenu from "../components/Navmenu";
 
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function SingleManage() {
-  const navigate = useNavigate();
 
-  const mockEvents = [
+  const mockdata = [
     {
       _id: "1",
-      eventname: "Music Concert",
-      artistname: "5",
-      eventtype: "Back",
-      eventimage: "event1.jpg",
+      namemassage: "Name Massage",
+      time: "5",
+      typemassage: "Back",
+      image: "event1.jpg",
       formattedCreatedAt: "2025-02-01",
     },
     {
       _id: "2",
-      eventname: "Art Festival",
-      artistname: "10",
-      eventtype: "Shoulder",
-      eventimage: "event2.jpg",
-      formattedCreatedAt: "2025-01-20",
-    },
-    {
-      _id: "3",
-      eventname: "Pub Night",
-      artistname: "15",
-      eventtype: "Neck",
-      eventimage: "event3.jpg",
-      formattedCreatedAt: "2025-01-15",
-    },
-    {
-      _id: "4",
-      eventname: "Internal Showcase",
-      artistname: "7",
-      eventtype: "Back",
-      eventimage: "event4.jpg",
-      formattedCreatedAt: "2025-01-10",
-    },
-    {
-      _id: "1",
-      eventname: "Music Concert",
-      artistname: "5",
-      eventtype: "Shoulder",
-      eventimage: "event1.jpg",
+      namemassage: "Name Massage",
+      time: "5",
+      typemassage: "Shoulder",
+      image: "event1.jpg",
       formattedCreatedAt: "2025-02-01",
-    },
-    {
-      _id: "2",
-      eventname: "Art Festival",
-      artistname: "10",
-      eventtype: "Neck",
-      eventimage: "event2.jpg",
-      formattedCreatedAt: "2025-01-20",
-    },
-    {
-      _id: "3",
-      eventname: "Pub Night",
-      artistname: "15",
-      eventtype: "Back",
-      eventimage: "event3.jpg",
-      formattedCreatedAt: "2025-01-15",
-    },
-    {
-      _id: "4",
-      eventname: "Internal Showcase",
-      artistname: "7",
-      eventtype: "Neck",
-      eventimage: "event4.jpg",
-      formattedCreatedAt: "2025-01-10",
-    },
-    {
-      _id: "1",
-      eventname: "Music Concert",
-      artistname: "5",
-      eventtype: "Shoulder",
-      eventimage: "event1.jpg",
-      formattedCreatedAt: "2025-02-01",
-    },
-    {
-      _id: "2",
-      eventname: "Art Festival",
-      artistname: "10",
-      eventtype: "Back",
-      eventimage: "event2.jpg",
-      formattedCreatedAt: "2025-01-20",
-    },
-    {
-      _id: "3",
-      eventname: "Pub Night",
-      artistname: "15",
-      eventtype: "Shoulder",
-      eventimage: "event3.jpg",
-      formattedCreatedAt: "2025-01-15",
-    },
-    {
-      _id: "4",
-      eventname: "Internal Showcase",
-      artistname: "7",
-      eventtype: "Neck",
-      eventimage: "event4.jpg",
-      formattedCreatedAt: "2025-01-10",
     },
   ];
 
@@ -124,7 +43,7 @@ function SingleManage() {
   useEffect(() => {
     // Simulate fetching data
     setTimeout(() => {
-      setData(mockEvents);
+      setData(mockdata);
     }, 500);
   }, []);
 
@@ -180,7 +99,7 @@ function SingleManage() {
               Manage Single Massages
             </p>
             <Link
-              to="/createevent"
+              to="/createsingle"
               className="min-h-[40px] max-h-[40px] h-full min-w-[150px] max-w-[150px] w-full bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium"
             >
               + Create Massage
@@ -236,21 +155,21 @@ function SingleManage() {
                         <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
                           <img
                             key={index}
-                            src={"./images/" + event.eventimage}
+                            src={"./images/" + event.image}
                             alt="Event"
                             className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
                           />
                         </div>
                         <p className="truncate overflow-hidden whitespace-nowrap">
-                          {event.eventname}
+                          {event.namemassage}
                         </p>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
-                      {`${event.artistname} minutes`}
+                      {`${event.time} minutes`}
                     </td>
                     <td className="h-[70px] text-black table-cell text-left align-middle px-4 text-[13px] font-medium">
-                      {event.eventtype}
+                      {event.typemassage}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       {event.formattedCreatedAt}
@@ -258,7 +177,7 @@ function SingleManage() {
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex justify-end">
                         <Link
-                          to={`/editevent/${event._id}`}
+                          to={`/editsinglemassage`}
                           className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
                         >
                           <IconCom icon="edit" />
@@ -281,22 +200,22 @@ function SingleManage() {
                         <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
                           <img
                             key={index}
-                            src={"./images/" + event.eventimage}
+                            src={"./images/" + event.image}
                             alt="Event"
                             className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
                           />
                         </div>
                         <div className="flex flex-col max-w-[120px] ">
                           <p className="text-black truncate overflow-hidden whitespace-nowrap">
-                            {event.eventname}
+                            {event.namemassage}
                           </p>
-                          <p className="font-extralight">{event.artistname}</p>
+                          <p className="font-extralight">{event.time}</p>
                         </div>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
                       <div className="flex items-center text-black justify-end">
-                        {event.eventtype}
+                        {event.typemassage}
                         <button
                           onClick={() => togglePopup(event)}
                           className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] text-white rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
@@ -352,7 +271,7 @@ function SingleManage() {
                 </button>
               </div>
               <Link
-                to={selectedEvent ? `/editevent/${selectedEvent._id}` : "#"}
+                to={selectedEvent ? `/editsinglemassage/${selectedEvent._id}` : "#"}
                 onClick={handleEdit}
                 className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
               >

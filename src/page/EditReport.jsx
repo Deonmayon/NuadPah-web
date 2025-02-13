@@ -35,22 +35,6 @@ function EditReport() {
     setStatus(mockUserData.status);
   }, [id]);
 
-  const onInputChange1 = (e) => {
-    const file = e.target.files[0];
-    setImage1(file);
-
-    // Preview image
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage1(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPreviewImage1(null);
-    }
-  };
-
   const handleUpdate = (e) => {
     e.preventDefault();
 

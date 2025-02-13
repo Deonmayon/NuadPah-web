@@ -51,7 +51,7 @@ function Nav() {
         <div className="flex items-center justify-between h-[60px]">
           <div className="flex items-center">
             <a href="/">
-              <IconCom icon="monster" size="50" />
+              <img src="/images/logo.png" className="w-[50px]" alt="" />
             </a>
           </div>
           {/* nav-link */}

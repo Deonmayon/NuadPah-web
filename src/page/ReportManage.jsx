@@ -3,7 +3,7 @@ import IconCom from "../components/IconCom";
 import Nav from "../components/Nav";
 import Navmenu from "../components/Navmenu";
 
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function ReportManage() {
   const navigate = useNavigate();
