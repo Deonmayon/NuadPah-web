@@ -6,14 +6,13 @@ import Navmenu from "../components/Navmenu";
 import { Link } from "react-router-dom";
 
 function SingleManage() {
-
   const mockdata = [
     {
       _id: "1",
       namemassage: "Name Massage",
       time: "5",
       typemassage: "Back",
-      image: "event1.jpg",
+      image: "https://picsum.photos/id/19/200/200",
       formattedCreatedAt: "2025-02-01",
     },
     {
@@ -21,7 +20,7 @@ function SingleManage() {
       namemassage: "Name Massage",
       time: "5",
       typemassage: "Shoulder",
-      image: "event1.jpg",
+      image: "https://picsum.photos/id/13/200/200",
       formattedCreatedAt: "2025-02-01",
     },
   ];
@@ -155,7 +154,7 @@ function SingleManage() {
                         <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
                           <img
                             key={index}
-                            src={"./images/" + event.image}
+                            src={event.image}
                             alt="Event"
                             className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
                           />
@@ -271,7 +270,11 @@ function SingleManage() {
                 </button>
               </div>
               <Link
-                to={selectedEvent ? `/editsinglemassage/${selectedEvent._id}` : "#"}
+                to={
+                  selectedEvent
+                    ? `/editsinglemassage/${selectedEvent._id}`
+                    : "#"
+                }
                 onClick={handleEdit}
                 className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
               >

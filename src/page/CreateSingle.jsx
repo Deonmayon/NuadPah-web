@@ -56,7 +56,6 @@ function CreateSingle() {
 
     const formData = {
       eventimage: image1,
-      artistimage: image2,
       ...values,
     };
 
