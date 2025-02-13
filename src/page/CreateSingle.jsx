@@ -175,7 +175,7 @@ function CreateSingle() {
                 />
 
                 <button className="h-[40px] w-full rounded-lg mt-[40px] bg-[#C0A172] text-[18px] text-center font-medium text-white transition-all duration-300 hover:bg-[#C0A172]">
-                  Create Event
+                  Create Single Massage
                 </button>
               </div>
             </div>
@@ -265,7 +265,7 @@ function CreateSingle() {
                 type="submit"
                 className="text-[18px] h-[40px] w-full rounded-lg mt-[40px] bg-[#C0A172] text-center font-medium text-white hover:bg-[#C0A172]"
               >
-                Create Event
+                Create Single Massage
               </button>
             </div>
           </form>

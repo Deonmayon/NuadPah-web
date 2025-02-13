@@ -7,6 +7,8 @@ import CreateSingle from "./page/CreateSingle";
 import EditUser from "./page/EditUser";
 import EditReport from "./page/EditReport";
 import EditSingleMassge from "./page/EditSingleMassage";
+import CreateSet from "./page/CreateSet";
+import EditSet from "./page/EditSet";
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
@@ -23,6 +25,8 @@ function App() {
         <Route path="/edituser" element={<EditUser />}></Route>
         <Route path="/editreport" element={<EditReport />}></Route>
         <Route path="/editsinglemassage" element={<EditSingleMassge />}></Route>
+        <Route path="/createset" element={<CreateSet />}></Route>
+        <Route path="/editset" element={<EditSet />}></Route>
       </Routes>
     </BrowserRouter>
   );

@@ -83,7 +83,7 @@ function SetofManage() {
               Manage Set of Massages
             </p>
             <Link
-              to="/createevent"
+              to="/createset"
               className="min-h-[40px] max-h-[40px] h-full px-2 bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium transition-all duration-300 hover:bg-[#C0A172]"
             >
               + Create Set of Massage
@@ -96,7 +96,7 @@ function SetofManage() {
               Manage Set of Massages
             </p>
             <Link
-              to="/createevent"
+              to="/createset"
               className="min-h-[40px] max-h-[40px] h-full min-w-[150px] max-w-[200px] w-full bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium"
             >
               + Create Set of Massage
