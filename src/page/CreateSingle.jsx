@@ -155,10 +155,11 @@ function CreateSingle() {
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
-                  <option>Select Type</option>
-                  <option value="back">Back</option>
                   <option value="shoulder">Shoulder</option>
+                  <option value="back">Back</option>
                   <option value="neck">Neck</option>
+                  <option value="arm">Arm</option>
+                  <option value="leg">Leg</option>
                 </select>
                 <p className="mt-[15px] mb-[10px] text-black">Learning Time</p>
                 <select
@@ -167,16 +168,18 @@ function CreateSingle() {
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
-                  <option>Select Time</option>
                   <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="15">15</option>
                   <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="40">40</option>
                 </select>
 
                 <p className="mt-[15px] mb-[10px] text-black">Round</p>
                 <input
                   type="number"
+                  
                   onChange={handleInput}
                   name="mt_round"
                   placeholder="Type Number"

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Nav from "../components/Nav";
@@ -10,13 +11,6 @@ function EditSingleMassge() {
   const [image1, setImage1] = useState(null);
   const [editData, setEditData] = useState({});
   const [previewImage1, setPreviewImage1] = useState(null);
-
-  // const [namemassage, setNamemassage] = useState("");
-  // const [detailmassage, setDetailmassage] = useState("");
-  // const [typemassage, setTypemassage] = useState("");
-  // const [time, setTime] = useState("");
-  // const [round, setRound] = useState("");
-  // const [imagemassage, setImagemassage] = useState("");
 
   const navigate = useNavigate();
 
@@ -141,6 +135,7 @@ function EditSingleMassge() {
                 <p className="mb-[10px] text-black">Name Massage</p>
                 <input
                   type="text"
+                  value={editData.mt_name}
                   onChange={handleInput}
                   name="mt_name"
                   placeholder="Name Massage"
@@ -150,6 +145,7 @@ function EditSingleMassge() {
                 <p className="mt-[15px] mb-[10px] text-black">Detail</p>
                 <textarea
                   type="text"
+                  value={editData.mt_detail}
                   onChange={handleInput}
                   name="mt_detail"
                   className="w-full pl-2 pt-2 rounded-md bg-[#DBDBDB] text-black focus:outline-none
@@ -160,33 +156,38 @@ function EditSingleMassge() {
                 ></textarea>
                 <p className="mt-[15px] mb-[10px] text-black">Type</p>
                 <select
+                  value={editData.mt_type}
                   onChange={handleInput}
                   name="mt_type"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
-                  <option>Select Type</option>
-                  <option value="back">Back</option>
                   <option value="shoulder">Shoulder</option>
+                  <option value="back">Back</option>
                   <option value="neck">Neck</option>
+                  <option value="arm">Arm</option>
+                  <option value="leg">Leg</option>
                 </select>
                 <p className="mt-[15px] mb-[10px] text-black">Time</p>
                 <select
+                  value={editData.mt_time}
                   onChange={handleInput}
                   name="mt_time"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
-                  <option>Select Time</option>
                   <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="15">15</option>
                   <option value="20">20</option>
+                  <option value="30">30</option>
+                  <option value="40">40</option>
                 </select>
 
                 <p className="mt-[15px] mb-[10px] text-black">Round</p>
                 <input
                   type="number"
+                  value={editData.mt_round}
                   onChange={handleInput}
                   name="mt_round"
                   placeholder="Type Number"
