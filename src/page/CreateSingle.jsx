@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
-import Navmenu from "../components/Navmenu";
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -68,7 +67,7 @@ function CreateSingle() {
   return (
     <div className="bg-white w-full h-full min-h-dvh font-kanit">
       <Nav />
-      <Navmenu className="z-50" />
+      
       <div className="mt-[120px] px-2 sm:px-4 md:px-6 lg:px-16 max-w-[1250px] mx-auto h-full flex justify-center">
         <div className="mt-[30px] w-full flex flex-col items-center">
           <div className="h-[70px] w-full flex flex-row items-center">
