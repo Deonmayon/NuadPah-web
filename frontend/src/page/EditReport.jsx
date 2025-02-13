@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import Navmenu from "../components/Navmenu";
 
 function EditReport() {
   const { id } = useParams();
@@ -19,7 +20,7 @@ function EditReport() {
     // Simulate fetching user data
     const mockUserData = {
       id: 1,
-      namereport: "John giogiogofgdfsd",
+      namereport: " Have a problem",
       namereporter: "John Doe",
       time: "23:28, 24/01/2022",
       description:
@@ -74,35 +75,9 @@ function EditReport() {
   };
 
   return (
-    <div className="bg-[#191414] w-full h-full min-h-dvh font-kanit">
+    <div className="bg-white w-full h-full min-h-dvh font-kanit">
       <Nav />
-      <div className="w-full min-h-[60px] bg-[#242424] mt-[60px] fixed top-0 z-10">
-        <div className="max-w-[1250px] mx-auto h-full bg-[#242424] px-4 sm:px-6 lg:px-8">
-          <div className="h-[60px] flex items-center justify-center sm:justify-start  text-white font-medium">
-            <Link
-              to="/manageuser"
-              className="ml-[20px] transition-all duration-500 px-3 py-2 hover:bg-[#191919] rounded-lg text-[16px] sm:text-[18px] md:text-[20px]"
-            >
-              Manage Single Massages
-            </Link>
-            <Link
-              to="/manageuser"
-              className="ml-[20px] transition-all duration-500 px-3 py-2 hover:bg-[#191919] rounded-lg text-[16px] sm:text-[18px] md:text-[20px]"
-            >
-              Manage Set of Massages
-            </Link>
-            <button className="ml-[20px] transition-all duration-500 px-3 py-2 rounded-lg bg-black text-[17px] sm:text-[18px] md:text-[20px]">
-              Manage Users
-            </button>
-            <Link
-              to="/manageuser"
-              className="ml-[20px] transition-all duration-500 px-3 py-2 hover:bg-[#191919] rounded-lg text-[16px] sm:text-[18px] md:text-[20px]"
-            >
-              Manage Reports
-            </Link>
-          </div>
-        </div>
-      </div>
+      <Navmenu />
       <form
         onSubmit={handleUpdate}
         className="mt-[120px] px-2 sm:px-4 lg:px-6 max-w-[1250px] mx-auto h-full flex justify-center"
@@ -111,40 +86,40 @@ function EditReport() {
           <div className="h-[70px] w-full flex flex-row items-center">
             <Link
               to={"/manageuser"}
-              className="flex px-3 py-2 rounded-lg items-center border-2 border-solid border-[#8A8A8A] text-white hover:bg-[#242424] transition-all duration-300"
+              className="flex px-3 py-2 rounded-lg items-center border-2 border-solid border-[#C0A172] text-[#C0A172] hover:bg-[#DBDBDB] transition-all duration-300"
             >
               <IconCom icon="left" size="18" />
               <p className="ml-[2px] text-[14px]">Back</p>
             </Link>
             <div className="ml-[15px] flex flex-col justify-evenly h-full">
-              <p className="text-[#1DB954] font-medium text-[16px]">
-                {id}-{namereport}
+              <p className="text-[#C0A172] font-medium text-[16px]">
+                00001-{namereport}
               </p>
-              <p className="text-white font-medium text-[20px]">Edit Report</p>
+              <p className="text-black font-medium text-[20px]">Edit Report</p>
             </div>
           </div>
-          <div className="mt-[10px] rounded-md bg-[#242424] w-full -h-[760px] p-[20px] text-[14px]">
-            <p className="mt-[10px] text-white font-medium text-[14px]">
+          <div className="mt-[10px] rounded-md bg-white w-full -h-[760px] pt-[20px] text-[14px]">
+            <p className="mt-[10px] text-black font-medium text-[14px]">
               {namereport}
             </p>
-            <p className="mt-[10px] text-white font-medium text-[14px]">
+            <p className="mt-[10px] text-black font-medium text-[14px]">
               {namereporter}
             </p>
-            <p className="mt-[10px] text-white font-medium text-[14px]">
+            <p className="mt-[10px] text-black font-medium text-[14px]">
               {time}
             </p>
-            <p className="mt-[10px] text-white font-medium text-[14px]">
+            <p className="mt-[10px] text-black font-medium text-[14px]">
               Detail Report
             </p>
-            <p className="mt-[10px] text-white font-medium text-[14px]">
+            <p className="mt-[10px] text-black font-medium text-[14px]">
               {description}
             </p>
             <select
               value={status}
               onChange={(e) => setStatus(e.target.value)}
               name="eventtype"
-              className="mt-[10px] h-[40px] w-full rounded-md px-2 bg-[#191414] text-white focus:outline-none
-                focus:ring-0 focus:ring-[#191414] focus:ring-offset-2 focus:ring-offset-[#1DB954]"
+              className="mt-[10px] h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
+                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
             >
               <option value="processing">processing</option>
               <option value="pending">pending</option>
@@ -153,7 +128,7 @@ function EditReport() {
             </select>
             <button
               type="submit"
-              className="mt-[20px] h-[40px] w-full rounded-md bg-[#1DB954] font-medium text-white text-[16px] transition-all duration-300 hover:bg-[#1CAA4E]"
+              className="mt-[20px] h-[40px] w-full rounded-md bg-[#C0A172] font-medium text-white text-[16px] transition-all duration-300 hover:bg-[#C0A172]"
             >
               Save
             </button>

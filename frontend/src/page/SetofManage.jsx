@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IconCom from "../components/IconCom";
 import Nav from "../components/Nav";
+import Navmenu from "../components/Navmenu";
 
 import { Link, useParams, useNavigate } from "react-router-dom";
 
@@ -10,9 +11,9 @@ function SetofManage() {
   const mockEvents = [
     {
       _id: "1",
-      eventname: "Music Concert",
+      eventname: "Name set of massage",
       artistname: "5",
-      eventtype: "concert",
+      eventtype: "back , neck , shoulder",
       eventimage: "event1.jpg",
       eventimage2: "event1.jpg",
       eventimage3: "event1.jpg",
@@ -20,9 +21,9 @@ function SetofManage() {
     },
     {
       _id: "2",
-      eventname: "Art Festival",
+      eventname: "Name set of massage",
       artistname: "10",
-      eventtype: "festival",
+      eventtype: "back , neck , shoulder",
       eventimage: "event2.jpg",
       eventimage2: "event1.jpg",
       eventimage3: "event1.jpg",
@@ -30,9 +31,9 @@ function SetofManage() {
     },
     {
       _id: "3",
-      eventname: "Pub Night",
+      eventname: "Name set of massage",
       artistname: "15",
-      eventtype: "pubbar",
+      eventtype: "back , neck , shoulder",
       eventimage: "event3.jpg",
       eventimage2: "event1.jpg",
       eventimage3: "event1.jpg",
@@ -40,9 +41,9 @@ function SetofManage() {
     },
     {
       _id: "4",
-      eventname: "Internal Showcase",
+      eventname: "Name set of massage",
       artistname: "7",
-      eventtype: "internal",
+      eventtype: "back , neck , shoulder",
       eventimage: "event4.jpg",
       eventimage2: "event1.jpg",
       eventimage3: "event1.jpg",
@@ -101,86 +102,59 @@ function SetofManage() {
   };
 
   return (
-    <div className="bg-[#191414] w-full h-full min-h-dvh font-kanit">
+    <div className="bg-white w-full h-full min-h-dvh font-kanit">
       <Nav className="z-20" />
-      <div className="w-full min-h-[60px] bg-[#242424] mt-[60px] fixed top-0">
-        <div className="max-w-[1250px] mx-auto h-full bg-[#242424] px-4 sm:px-6 lg:px-8">
-          <div className="h-[60px] flex items-center justify-center sm:justify-start  text-white font-medium">
-            
-            <Link
-              to="/manageuser"
-              className="transition-all duration-500 px-3 py-2 hover:bg-[#191919] rounded-lg text-[16px] sm:text-[18px] md:text-[20px]"
-            >
-              Manage Single Massages
-            </Link>
-            <button className="ml-[20px] transition-all duration-500 px-3 py-2 rounded-lg bg-black text-[17px] sm:text-[18px] md:text-[20px]">
-              Manage Set of Massages
-            </button>
-            <Link
-              to="/manageuser"
-              className="ml-[20px] transition-all duration-500 px-3 py-2 hover:bg-[#191919] rounded-lg text-[16px] sm:text-[18px] md:text-[20px]"
-            >
-              Manage Users
-            </Link>
-            <Link
-              to="/manageuser"
-              className="ml-[20px] transition-all duration-500 px-3 py-2 hover:bg-[#191919] rounded-lg text-[16px] sm:text-[18px] md:text-[20px]"
-            >
-              Manage Reports
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className="mt-[120px] px-2 sm:px-4 lg:px-6 max-w-[1250px] mx-auto h-full">
+      <Navmenu />
+      <div className="mt-[120px] px-2 sm:px-4 lg:px-6 max-w-[1440px] mx-auto h-full">
         <div className="hidden sm:block my-[30px]">
           <div className="flex justify-between items-center">
-            <p className="font-medium text-white text-[35px] md:text-[40px]">
-              Manage Single Massages
+            <p className="font-medium text-[#C0A172] text-[35px] md:text-[40px]">
+              Manage Set of Massages
             </p>
             <Link
               to="/createevent"
               className="min-h-[40px] max-h-[40px] h-full px-2 bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium transition-all duration-300 hover:bg-[#1CAA4E]"
             >
-              + Create Massage
+              + Create Set of Massage
             </Link>
           </div>
         </div>
         <div className="block sm:hidden my-[30px]">
           <div className="flex flex-col">
-            <p className="font-medium text-[#1DB954] text-[35px] md:text-[40px] mb-[20px]">
-              Manage Events
+            <p className="font-medium text-[#C0A172] text-[35px] md:text-[40px] mb-[20px]">
+              Manage Set of Massages
             </p>
             <Link
               to="/createevent"
-              className="min-h-[40px] max-h-[40px] h-full min-w-[150px] max-w-[150px] w-full bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium"
+              className="min-h-[40px] max-h-[40px] h-full min-w-[150px] max-w-[200px] w-full bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium"
             >
-              + Create Massage
+              + Create Set of Massage
             </Link>
           </div>
         </div>
-        <div className="min-h-[840px] max-h-[840px] min-w-[382px] max-w-[1210px] h-full w-full rounded-md flex flex-col">
+        <div className="min-h-[840px] max-h-[840px] min-w-[382px] max-w-[1440px] h-full w-full rounded-md flex flex-col">
           <div className="block md:hidden">
-            <div className="w-full min-h-[70px] max-h-[70px] h-full flex flex-row items-center px-4 text-white justify-between bg-[#242424] rounded-t-md">
+            <div className="w-full min-h-[70px] max-h-[70px] h-full flex flex-row items-center px-4 text-white justify-between bg-white rounded-t-md">
               <button
                 onClick={prevPage}
                 disabled={currentPage === 1}
-                className="transition-all duration-300 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#1DB954] text-[16px] hover:bg-[#191919]"
+                className="transition-all duration-300 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#C0A172] text-[16px] hover:bg-[#C0A172]"
               >
                 <IconCom icon="left" size="22" />
               </button>
-              <p className="text-[#8A8A8A] text-[16px] font-medium">
+              <p className="text-[#C0A172] text-[16px] font-medium">
                 Page {currentPage} of {totalPages}
               </p>
               <button
                 onClick={nextPage}
                 disabled={currentPage === totalPages}
-                className="transition-all duration-300 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#1DB954] text-[16px] hover:bg-[#191919]"
+                className="transition-all duration-300 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#C0A172] text-[16px] hover:bg-[#C0A172]"
               >
                 <IconCom icon="right" size="22" />
               </button>
             </div>
           </div>
-          <table className="table text-[#8A8A8A] text-[16px] min-h-[70px] max-h-[70px] h-full w-full items-center bg-[#242424] md:rounded-t-md">
+          <table className="table text-[#C0A172] text-[16px] min-h-[70px] max-h-[70px] h-full w-full items-center bg-white md:rounded-t-md">
             <thead className="table-header-group">
               <tr className="md:table-row hidden">
                 <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
@@ -201,7 +175,7 @@ function SetofManage() {
             <tbody className="table-row-group">
               {currentEvents.map((event, index) => (
                 <React.Fragment key={index}>
-                  <tr className="text-white border-y border-solid border-[#191414] hidden md:table-row hover:bg-[#2B2B2B] transition-all duration-300">
+                  <tr className="text-black border-y border-solid border-[#C0A172] hidden md:table-row hover:bg-[#DBDBDB] transition-all duration-300">
                     <td className="max-w-[90px] sm:max-w-[130px] md:max-w-[200px] h-[110px] table-cell text-left align-middle px-4">
                       <div className="flex items-center">
                         <div className="min-h-[90px] min-w-[90px] max-h-[90px] max-w-[90px] w-full h-full bg-[#1DB954] rounded-lg justify-start items-start mr-[8px]">
@@ -237,40 +211,7 @@ function SetofManage() {
                       {`${event.artistname} minutes`}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
-                      {(() => {
-                        switch (event.eventtype) {
-                          case "concert":
-                            return (
-                              <div className="px-2 py-0 rounded-2xl bg-[#542217] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                <p>concert</p>
-                              </div>
-                            );
-                          case "festival":
-                            return (
-                              <div className="px-2 py-0 rounded-2xl bg-[#535417] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                <p>festival</p>
-                              </div>
-                            );
-                          case "pubbar":
-                            return (
-                              <div className="px-2 py-0 rounded-2xl bg-[#175445] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                <p>pub/bar</p>
-                              </div>
-                            );
-                          case "internal":
-                            return (
-                              <div className="px-2 py-0 rounded-2xl bg-[#2E1754] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                <p>internal</p>
-                              </div>
-                            );
-                          default:
-                            return (
-                              <div className="px-2 py-0 rounded-2xl bg-[#54174E] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                <p>{event.eventtype}</p>
-                              </div>
-                            );
-                        }
-                      })()}
+                      {event.eventtype}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       {event.formattedCreatedAt}
@@ -279,13 +220,13 @@ function SetofManage() {
                       <div className="flex justify-end">
                         <Link
                           to={`/editevent/${event._id}`}
-                          className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#1DB954] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#1CAA4E]"
+                          className="min-h-[40px] text-white min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
                         >
                           <IconCom icon="edit" />
                         </Link>
                         <button
                           onClick={() => handleDelete(event._id)}
-                          className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#942423] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C]"
+                          className="ml-4 min-h-[40px] text-white min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C]"
                         >
                           <IconCom icon="trash" />
                         </button>
@@ -294,11 +235,11 @@ function SetofManage() {
                   </tr>
                   <tr
                     key={index}
-                    className="table-row md:hidden border-y border-solid border-[#191414] hover:bg-[#2B2B2B]"
+                    className="table-row md:hidden border-y border-solid border-[#C0A172] hover:bg-[#DBDBDB]"
                   >
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex">
-                        <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#1DB954] rounded-lg flex justify-center items-center mr-[8px]">
+                        <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
                           <img
                             key={index}
                             src={"./images/" + event.eventimage}
@@ -307,52 +248,19 @@ function SetofManage() {
                           />
                         </div>
                         <div className="flex flex-col max-w-[120px] ">
-                          <p className="text-white truncate overflow-hidden whitespace-nowrap">
+                          <p className="text-black truncate overflow-hidden whitespace-nowrap">
                             {event.eventname}
                           </p>
-                          <p className="font-extralight">{event.artistname}</p>
+                          <p className="font-extralight text-black">{`${event.artistname} minutes`}</p>
                         </div>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
-                      <div className="flex items-center text-white justify-end">
-                        {(() => {
-                          switch (event.eventtype) {
-                            case "concert":
-                              return (
-                                <div className="px-2 py-0 rounded-2xl bg-[#542217] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                  <p>concert</p>
-                                </div>
-                              );
-                            case "festival":
-                              return (
-                                <div className="px-2 py-0 rounded-2xl bg-[#535417] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                  <p>festival</p>
-                                </div>
-                              );
-                            case "pubbar":
-                              return (
-                                <div className="px-2 py-0 rounded-2xl bg-[#175445] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                  <p>pub/bar</p>
-                                </div>
-                              );
-                            case "internal":
-                              return (
-                                <div className="px-2 py-0 rounded-2xl bg-[#2E1754] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                  <p>internal</p>
-                                </div>
-                              );
-                            default:
-                              return (
-                                <div className="px-2 py-0 rounded-2xl bg-[#54174E] flex items-center justify-center border border-solid border-[#8A8A8A]">
-                                  <p>{event.eventtype}</p>
-                                </div>
-                              );
-                          }
-                        })()}
+                      <div className="flex items-center text-black justify-end">
+                       {event.eventtype}
                         <button
                           onClick={() => togglePopup(event)}
-                          className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#1DB954] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#1CAA4E]"
+                          className="ml-4 min-h-[40px] min-w-[40px] text-white max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
                         >
                           <IconCom icon="point" />
                         </button>
@@ -364,21 +272,21 @@ function SetofManage() {
             </tbody>
           </table>
           {/* Bottom content */}
-          <div className="w-full min-h-[70px] min-w-[382px] max-h-[70px] h-full flex flex-row items-center px-4 text-white justify-between bg-[#242424] rounded-b-md">
+          <div className="w-full min-h-[70px] min-w-[382px] max-h-[70px] h-full flex flex-row items-center px-4 text-white justify-between bg-white rounded-b-md">
             <button
               onClick={prevPage}
               disabled={currentPage === 1}
-              className="transition-all duration-300 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#1DB954] text-[16px] hover:bg-[#191919]"
+              className="transition-all duration-300 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#C0A172] text-[16px] hover:bg-[#C0A172]"
             >
               <IconCom icon="left" size="22" />
             </button>
-            <p className="text-[#8A8A8A] text-[16px] font-medium">
+            <p className="text-[#C0A172] text-[16px] font-medium">
               Page {currentPage} of {totalPages}
             </p>
             <button
               onClick={nextPage}
               disabled={currentPage === totalPages}
-              className="transition-all duration-300 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#1DB954] text-[16px] hover:bg-[#191919]"
+              className="transition-all duration-300 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#C0A172] text-[16px] hover:bg-[#C0A172]"
             >
               <IconCom icon="right" size="22" />
             </button>
@@ -394,27 +302,27 @@ function SetofManage() {
           ></div>
           {/* Popup Content */}
           <div className="fixed z-20 bottom-0 inset-x-0 flex items-center justify-center mb-5">
-            <div className="px-5 py-3 w-full h-full max-w-[420px] max-h-[170px] bg-[#191919] rounded-md shadow-lg text-white">
+            <div className="px-5 py-3 w-full h-full max-w-[420px] max-h-[170px] bg-[#C0A172] rounded-md shadow-lg text-white">
               <div className="flex justify-between py-2">
                 <p className="font-medium text-[20px]">Select</p>
                 <button
                   onClick={togglePopup}
-                  className="flex items-center justify-center w-[30px] h-[30px] rounded-full bg-[#242424] hover:bg-[#942423]"
+                  className="flex items-center justify-center w-[30px] h-[30px] rounded-full bg-white text-[#C0A172] hover:bg-[#FF5757]"
                 >
                   <IconCom icon="x" />
                 </button>
               </div>
               <Link
-                to={selectedEvent ? `/editevent/${selectedEvent._id}` : "#"}
+                to={selectedEvent ? `/editevent/${selectedEvent._id}` : '#'}
                 onClick={handleEdit}
-                className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#242424]"
+                className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
               >
                 <IconCom icon="edit" />
                 <p className="ml-[10px] text-[16px] font-medium">Edit</p>
               </Link>
               <button
                 onClick={() => selectedEvent && handleDelete(selectedEvent._id)}
-                className="transition-all duration-300 flex w-full items-center px-4 py-3 text-sm text-left bg-[#581615] rounded-md hover:bg-[#942423]"
+                className="transition-all duration-300 flex w-full items-center px-4 py-3 text-sm text-left bg-[#FF5757] rounded-md hover:bg-[#FF5757]"
               >
                 <IconCom icon="trash" />
                 <p className="ml-[10px] text-[16px] font-medium">Delete</p>

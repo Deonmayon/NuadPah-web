@@ -6,11 +6,8 @@ function Nav() {
   const [name, setName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
   const [open, setOpen] = useState(false);
-
   const [results, setResults] = useState([]);
-
   const navigate = useNavigate();
 
   const mockUserData = {
@@ -50,7 +47,7 @@ function Nav() {
         open ? "sticky mb-[-60px] !important" : "fixed"
       }`}
     >
-      <div className="max-w-[1250px] mx-auto h-full bg-[#C0A172] px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1440px] mx-auto h-full bg-[#C0A172] px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-[60px]">
           <div className="flex items-center">
             <a href="/">
@@ -96,8 +93,8 @@ function Nav() {
               type="button"
               onClick={hundleMenu}
               className="inline-flex items-center justify-center p-2 
-                        rounded-md text-slate-200 hover:text-white hover:bg-[#1CAA4E] focus:outline-none 
-                        focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1DB954] focus:ring-white"
+                        rounded-md text-slate-200 hover:text-white hover:bg-[#C0A172] focus:outline-none 
+                        focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#C0A172] focus:ring-white"
             >
               <span className="sr-only">Open Main Menu</span>
               {open ? (
@@ -120,7 +117,7 @@ function Nav() {
                 </p>
                 <a
                   onClick={handleLogout}
-                  className="text-slate-200 hover:bg-[#7D1D1C] bg-[#942423]
+                  className="text-slate-200 hover:bg-[#FF5757] bg-[#FF5757]
                   hover:text-white block px-3 py-2 rounded-md text-[20px] font-medium text-start"
                 >
                   Logout

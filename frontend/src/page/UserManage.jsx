@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
+import Navmenu from "../components/Navmenu";
 
 import { Link, useParams, useNavigate } from "react-router-dom";
 
@@ -105,64 +106,37 @@ function UserManage() {
   };
 
   return (
-    <div className="bg-[#191414] w-full h-full min-h-dvh font-kanit">
+    <div className="bg-white w-full h-full min-h-dvh font-kanit">
       <Nav className="z-20" />
-      <div className="mt-[60px] w-full min-h-[60px] bg-[#242424] fixed top-0 z-10">
-        <div className="max-w-[1250px] mx-auto h-full bg-[#242424] px-4 sm:px-6 lg:px-8">
-          <div className="h-[60px] flex items-center justify-center sm:justify-start  text-white font-medium">
-            <Link
-              to="/manageuser"
-              className="transition-all duration-500 px-3 py-2 hover:bg-[#191919] rounded-lg text-[16px] sm:text-[18px] md:text-[20px]"
-            >
-              Manage Single Massages
-            </Link>
-            <Link
-              to="/manageuser"
-              className="ml-[20px] transition-all duration-500 px-3 py-2 hover:bg-[#191919] rounded-lg text-[16px] sm:text-[18px] md:text-[20px]"
-            >
-              Manage Set of Massages
-            </Link>
-            <button className="ml-[20px] transition-all duration-500 px-3 py-2 rounded-lg bg-black text-[17px] sm:text-[18px] md:text-[20px]">
-              Manage Users
-            </button>
-
-            <Link
-              to="/manageuser"
-              className="ml-[20px] transition-all duration-500 px-3 py-2 hover:bg-[#191919] rounded-lg text-[16px] sm:text-[18px] md:text-[20px]"
-            >
-              Manage Reports
-            </Link>
-          </div>
-        </div>
-      </div>
-      <div className="mt-[120px] px-2 sm:px-4 lg:px-6 max-w-[1250px] mx-auto h-full">
-        <p className="font-medium text-[#1DB954] text-[35px] md:text-[40px] my-[30px]">
+      <Navmenu />
+      <div className="mt-[120px] px-2 sm:px-4 lg:px-6 max-w-[1440px] mx-auto h-full">
+        <p className="font-medium text-[#C0A172] text-[35px] md:text-[40px] my-[30px]">
           Manage Users
         </p>
-        <div className="min-h-[840px] max-h-[840px] min-w-[382px] max-w-[1210px] h-full w-full rounded-md flex flex-col">
+        <div className="min-h-[840px] max-h-[840px] min-w-[382px] max-w-[1440px] h-full w-full rounded-md flex flex-col">
           <div className="block md:hidden">
-            <div className="w-full min-h-[70px] max-h-[70px] h-full flex flex-row items-center px-4 text-white justify-between bg-[#242424] rounded-t-md">
+            <div className="w-full min-h-[70px] max-h-[70px] h-full flex flex-row items-center px-4 text-white justify-between bg-white rounded-t-md">
               <button
                 onClick={prevPage}
                 disabled={currentPage === 1}
-                className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#1DB954] text-[16px] hover:bg-[#191919] transition-all duration-300"
+                className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#C0A172] text-[16px] hover:bg-[#C0A172] transition-all duration-300"
               >
                 <IconCom icon="left" size="22" />
               </button>
-              <p className="text-[#8A8A8A] text-[16px] font-medium">
+              <p className="text-[#C0A172] text-[16px] font-medium">
                 Page {currentPage} of {totalPages}
               </p>
               <button
                 onClick={nextPage}
                 disabled={currentPage === totalPages}
-                className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#1DB954] text-[16px] hover:bg-[#191919] transition-all duration-300"
+                className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#C0A172] text-[16px] hover:bg-[#C0A172] transition-all duration-300"
               >
                 <IconCom icon="right" size="22" />
               </button>
             </div>
           </div>
           {data.length > 0 && (
-            <table className="table text-[#8A8A8A] text-[16px] min-h-[70px] max-h-[70px] h-full w-full items-center bg-[#242424] md:rounded-t-md">
+            <table className="table text-[#C0A172] text-[16px] min-h-[70px] max-h-[70px] h-full w-full items-center bg-white md:rounded-t-md">
               <thead className="table-header-group">
                 <tr className="md:table-row hidden">
                   <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
@@ -180,10 +154,10 @@ function UserManage() {
               <tbody className="table-row-group">
                 {currentUsers.map((user, index) => (
                   <React.Fragment key={index}>
-                    <tr className="text-white border-y border-solid border-[#191414] hidden md:table-row hover:bg-[#2B2B2B] transition-all duration-300">
+                    <tr className="text-black border-y border-solid border-[#C0A172] hidden md:table-row hover:bg-[#DBDBDB] transition-all duration-300">
                       <td className="max-w-[90px] sm:max-w-[130px] md:max-w-[200px] h-[70px] table-cell text-left align-middle px-4">
                         <div className="flex items-center">
-                          <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#1DB954] rounded-full flex justify-center items-center mr-[8px]">
+                          <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-full flex justify-center items-center mr-[8px]">
                             <img
                               key={index}
                               src={"./images/" + user.eventimage}
@@ -208,13 +182,13 @@ function UserManage() {
                         <div className="flex justify-end">
                           <Link
                             to={`/edituser/${user._id}`}
-                            className="transition-all duration-300 hover:bg-[#1CAA4E] min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#1DB954] rounded-lg flex justify-center items-center"
+                            className="transition-all text-white duration-300 hover:bg-[#C0A172] min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center"
                           >
                             <IconCom icon="edit" />
                           </Link>
                           <button
                             onClick={() => handleDelete(user._id)}
-                            className="transition-all duration-300 hover:bg-[#7D1D1C] ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#942423] rounded-lg flex justify-center items-center"
+                            className="transition-all text-white duration-300 bg-[#FF5757] ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full hover:bg-[#942423] rounded-lg flex justify-center items-center"
                           >
                             <IconCom icon="trash" />
                           </button>
@@ -223,19 +197,29 @@ function UserManage() {
                     </tr>
                     <tr
                       key={index}
-                      className="table-row md:hidden border-y border-solid border-[#191414] hover:bg-[#2B2B2B] transition-all duration-300"
+                      className="table-row md:hidden border-y border-solid border-[#C0A172] hover:bg-[#DBDBDB] transition-all duration-300"
                     >
                       <td className="h-[70px] table-cell text-left align-middle px-4">
-                        <div className="flex flex-col">
-                          <p className="text-white">{user.username}</p>
-                          <p className="font-extralight">{user.email}</p>
+                        <div className="flex items-center">
+                          <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-full flex justify-center items-center mr-[8px]">
+                            <img
+                              src={"./images/" + user.eventimage}
+                              alt="Event"
+                              className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-full"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                          <p className="text-black">{user.username}</p>
+                          <p className="font-extralight text-black">{user.email}</p>
                         </div>
+                        </div>
+                        
                       </td>
                       <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
                         <div className="flex items-center text-white justify-end">
                           <button
                             onClick={() => togglePopup(user)}
-                            className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#1DB954] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#1CAA4E]"
+                            className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
                           >
                             <IconCom icon="point" />
                           </button>
@@ -248,21 +232,21 @@ function UserManage() {
             </table>
           )}
           {/* Bottom content */}
-          <div className="w-full min-h-[70px] min-w-[382px] max-h-[70px] h-full flex flex-row items-center px-4 text-white justify-between bg-[#242424] rounded-b-md">
+          <div className="w-full min-h-[70px] min-w-[382px] max-h-[70px] h-full flex flex-row items-center px-4 text-white justify-between bg-white rounded-b-md">
             <button
               onClick={prevPage}
               disabled={currentPage === 1}
-              className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#1DB954] text-[16px] hover:bg-[#191919] transition-all duration-300"
+              className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#C0A172] text-[16px] hover:bg-[#C0A172] transition-all duration-300"
             >
               <IconCom icon="left" size="22" />
             </button>
-            <p className="text-[#8A8A8A] text-[16px] font-medium">
+            <p className="text-[#C0A172] text-[16px] font-medium">
               Page {currentPage} of {totalPages}
             </p>
             <button
               onClick={nextPage}
               disabled={currentPage === totalPages}
-              className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#1DB954] text-[16px] hover:bg-[#191919] transition-all duration-300"
+              className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full flex justify-center items-center rounded-lg bg-[#C0A172] text-[16px] hover:bg-[#C0A172] transition-all duration-300"
             >
               <IconCom icon="right" size="22" />
             </button>
@@ -278,27 +262,27 @@ function UserManage() {
           ></div>
           {/* Popup Content */}
           <div className="fixed z-20 bottom-0 inset-x-0 flex items-center justify-center mb-5">
-            <div className="px-5 py-3 w-full h-full max-w-[420px] max-h-[170px] bg-[#191919] rounded-md shadow-lg text-white">
+            <div className="px-5 py-3 w-full h-full max-w-[420px] max-h-[170px] bg-[#C0A172] rounded-md shadow-lg text-white">
               <div className="flex justify-between py-2">
                 <p className="font-medium text-[20px]">Select</p>
                 <button
                   onClick={togglePopup}
-                  className="flex items-center justify-center w-[30px] h-[30px] rounded-full bg-[#242424] hover:bg-[#942423]"
+                  className="flex items-center justify-center w-[30px] h-[30px] rounded-full bg-white text-[#C0A172] hover:bg-[#FF5757]"
                 >
                   <IconCom icon="x" />
                 </button>
               </div>
               <Link
-                to={`/edituser/${selectedUser._id}`}
+                to={selectedUser ? `/editevent/${selectedUser._id}` : '#'}
                 onClick={handleEdit}
-                className="mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#242424] transition-all duration-300"
+                className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
               >
                 <IconCom icon="edit" />
                 <p className="ml-[10px] text-[16px] font-medium">Edit</p>
               </Link>
               <button
-                onClick={() => handleDelete(selectedUser._id)}
-                className="flex w-full items-center px-4 py-3 text-sm text-left bg-[#581615] rounded-md hover:bg-[#942423] transition-all duration-300"
+                onClick={() => selectedUser && handleDelete(selectedUser._id)}
+                className="transition-all duration-300 flex w-full items-center px-4 py-3 text-sm text-left bg-[#FF5757] rounded-md hover:bg-[#FF5757]"
               >
                 <IconCom icon="trash" />
                 <p className="ml-[10px] text-[16px] font-medium">Delete</p>
