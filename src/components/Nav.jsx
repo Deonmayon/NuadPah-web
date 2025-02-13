@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import IconCom from "./IconCom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link } from "react-router-dom";
 
 function Nav() {
   const [name, setName] = useState("");
@@ -53,6 +53,46 @@ function Nav() {
             <a href="/">
               <img src="/images/logo.png" className="w-[50px]" alt="" />
             </a>
+            <Link
+              to="/singlemanage"
+              className={`h-full ml-[20px] transition-all duration-100 px-3 py-2 text-[12px] sm:text-[14px] md:text-[18px] ${
+                location.pathname === "/singlemanage"
+                  ? "border-b-4 border-white"
+                  : "hover:border-b-4"
+              }`}
+            >
+              Manage Single Massages
+            </Link>
+            <Link
+              to="/setofmanage"
+              className={`h-full ml-[20px] transition-all duration-100 px-3 py-2 text-[12px] sm:text-[14px] md:text-[18px] ${
+                location.pathname === "/setofmanage"
+                  ? "border-b-4 border-white"
+                  : "hover:border-b-4"
+              }`}
+            >
+              Manage Set of Massages
+            </Link>
+            <Link
+              to="/usermanage"
+              className={`h-full ml-[20px] transition-all duration-100 px-3 py-2 text-[12px] sm:text-[14px] md:text-[18px] ${
+                location.pathname === "/usermanage"
+                  ? "border-b-4 border-white"
+                  : "hover:border-b-4"
+              }`}
+            >
+              Manage Users
+            </Link>
+            <Link
+              to="/reportmanage"
+              className={`h-full ml-[20px] transition-all duration-100 px-3 py-2 text-[12px] sm:text-[14px] md:text-[18px] ${
+                location.pathname === "/reportmanage"
+                  ? "border-b-4 border-white"
+                  : "hover:border-b-4"
+              }`}
+            >
+              Manage Reports
+            </Link>
           </div>
           {/* nav-link */}
           <div className="hidden md:block">

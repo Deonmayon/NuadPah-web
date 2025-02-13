@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import Navmenu from "../components/Navmenu";
 
 function EditUser() {
   const { id } = useParams();
@@ -74,7 +73,6 @@ function EditUser() {
   return (
     <div className="bg-white w-full h-full min-h-dvh font-kanit">
       <Nav />
-      <Navmenu />
       <form
         onSubmit={handleUpdate}
         className="mt-[120px] px-2 sm:px-4 lg:px-6 max-w-[1250px] mx-auto h-full flex justify-center"

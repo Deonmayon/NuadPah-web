@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
-import Navmenu from "../components/Navmenu";
 
 import { Link, useParams, useNavigate } from "react-router-dom";
 
@@ -108,7 +107,6 @@ function UserManage() {
   return (
     <div className="bg-white w-full h-full min-h-dvh font-kanit">
       <Nav className="z-20" />
-      <Navmenu />
       <div className="mt-[120px] px-2 sm:px-4 lg:px-6 max-w-[1440px] mx-auto h-full">
         <p className="font-medium text-[#C0A172] text-[35px] md:text-[40px] my-[30px]">
           Manage Users
