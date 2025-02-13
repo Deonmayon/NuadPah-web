@@ -53,7 +53,6 @@ function EditUser() {
     }
   };
 
-
   const handleUpdate = (e) => {
     e.preventDefault();
 
@@ -86,7 +85,7 @@ function EditUser() {
         <div className="mt-[30px] h-[540px] w-[420px] flex flex-col items-center">
           <div className="h-[70px] w-full flex flex-row items-center">
             <Link
-              to={"/manageuser"}
+              to={"/usermanage"}
               className="flex px-3 py-2 rounded-lg items-center border-2 border-solid border-[#C0A172] text-[#C0A172] hover:bg-[#DBDBDB] transition-all duration-300"
             >
               <IconCom icon="left" size="18" />
@@ -128,7 +127,9 @@ function EditUser() {
             ></input>
             <div className="mt-[15px] mb-[10px] flex">
               <div className="w-1/2 pr-[5px]">
-                <p className="mb-[10px] text-black font-medium text-[14px]">Username</p>
+                <p className="mb-[10px] text-black font-medium text-[14px]">
+                  Username
+                </p>
                 <input
                   type="text"
                   value={username}
@@ -140,7 +141,9 @@ function EditUser() {
                 />
               </div>
               <div className="pl-[5px] w-1/2">
-                <p className="mb-[10px] text-black font-medium text-[14px]">Lastname</p>
+                <p className="mb-[10px] text-black font-medium text-[14px]">
+                  Lastname
+                </p>
                 <input
                   type="text"
                   value={lastname}
@@ -151,7 +154,7 @@ function EditUser() {
                       focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 />
               </div>
-            </div> 
+            </div>
             <p className="mt-[10px] text-black font-medium text-[14px]">
               Email
             </p>

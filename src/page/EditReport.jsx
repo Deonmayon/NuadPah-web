@@ -28,7 +28,6 @@ function EditReport() {
       status: "processing",
     };
 
-    
     setNamereport(mockUserData.namereport);
     setNamereporter(mockUserData.namereporter);
     setTime(mockUserData.time);
@@ -51,7 +50,6 @@ function EditReport() {
       setPreviewImage1(null);
     }
   };
-
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -85,7 +83,7 @@ function EditReport() {
         <div className="mt-[30px] h-[540px] w-[420px] flex flex-col items-center">
           <div className="h-[70px] w-full flex flex-row items-center">
             <Link
-              to={"/manageuser"}
+              to={"/reportmanage"}
               className="flex px-3 py-2 rounded-lg items-center border-2 border-solid border-[#C0A172] text-[#C0A172] hover:bg-[#DBDBDB] transition-all duration-300"
             >
               <IconCom icon="left" size="18" />
@@ -124,7 +122,6 @@ function EditReport() {
               <option value="processing">processing</option>
               <option value="pending">pending</option>
               <option value="completed">completed</option>
-              
             </select>
             <button
               type="submit"

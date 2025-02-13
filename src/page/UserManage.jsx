@@ -14,7 +14,6 @@ function UserManage() {
       role: "admin",
       formattedCreatedAt: "2025-01-01",
       eventimage: "event1.jpg",
-
     },
     {
       _id: "2",
@@ -67,11 +66,11 @@ function UserManage() {
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-      // Simulate fetching data
-      setTimeout(() => {
-        setData(mockData);
-      }, 500);
-    }, []);
+    // Simulate fetching data
+    setTimeout(() => {
+      setData(mockData);
+    }, 500);
+  }, []);
 
   const togglePopup = (user) => {
     setShowPopup(!showPopup);
@@ -170,7 +169,7 @@ function UserManage() {
                           </p>
                         </div>
                       </td>
-                      
+
                       <td className="h-[70px] table-cell text-left align-middle px-4">
                         {user.email}
                       </td>
@@ -181,7 +180,7 @@ function UserManage() {
                       <td className="h-[70px] table-cell text-left align-middle px-4">
                         <div className="flex justify-end">
                           <Link
-                            to={`/edituser/${user._id}`}
+                            to={`/edituser`}
                             className="transition-all text-white duration-300 hover:bg-[#C0A172] min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center"
                           >
                             <IconCom icon="edit" />
@@ -209,11 +208,12 @@ function UserManage() {
                             />
                           </div>
                           <div className="flex flex-col">
-                          <p className="text-black">{user.username}</p>
-                          <p className="font-extralight text-black">{user.email}</p>
+                            <p className="text-black">{user.username}</p>
+                            <p className="font-extralight text-black">
+                              {user.email}
+                            </p>
+                          </div>
                         </div>
-                        </div>
-                        
                       </td>
                       <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
                         <div className="flex items-center text-white justify-end">
@@ -273,7 +273,7 @@ function UserManage() {
                 </button>
               </div>
               <Link
-                to={selectedUser ? `/editevent/${selectedUser._id}` : '#'}
+                to={selectedUser ? `/editevent/${selectedUser._id}` : "#"}
                 onClick={handleEdit}
                 className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
               >

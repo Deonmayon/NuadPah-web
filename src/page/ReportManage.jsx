@@ -9,14 +9,40 @@ function ReportManage() {
   const navigate = useNavigate();
 
   const mockEvents = [
-    { _id: "000001", eventname: "Have a problem", artistname: "Leslie Alexander", eventtype: "pending", eventimage: "event1.jpg", formattedCreatedAt: "2025-02-01" },
-    { _id: "000002", eventname: "Have a question", artistname: "Guy Hawkins", eventtype: "processing", eventimage: "event2.jpg", formattedCreatedAt: "2025-01-20" },
-    { _id: "000003", eventname: "Have a jookroo", artistname: "Marvin McKinney", eventtype: "completed", eventimage: "event3.jpg", formattedCreatedAt: "2025-01-15" },
-    { _id: "000004", eventname: "Have a Showcase", artistname: "Arlene McCoy", eventtype: "pending", eventimage: "event4.jpg", formattedCreatedAt: "2025-01-10" },
-
+    {
+      _id: "000001",
+      eventname: "Have a problem",
+      artistname: "Leslie Alexander",
+      eventtype: "pending",
+      eventimage: "event1.jpg",
+      formattedCreatedAt: "2025-02-01",
+    },
+    {
+      _id: "000002",
+      eventname: "Have a question",
+      artistname: "Guy Hawkins",
+      eventtype: "processing",
+      eventimage: "event2.jpg",
+      formattedCreatedAt: "2025-01-20",
+    },
+    {
+      _id: "000003",
+      eventname: "Have a jookroo",
+      artistname: "Marvin McKinney",
+      eventtype: "completed",
+      eventimage: "event3.jpg",
+      formattedCreatedAt: "2025-01-15",
+    },
+    {
+      _id: "000004",
+      eventname: "Have a Showcase",
+      artistname: "Arlene McCoy",
+      eventtype: "pending",
+      eventimage: "event4.jpg",
+      formattedCreatedAt: "2025-01-10",
+    },
   ];
 
-  
   const [data, setData] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -81,7 +107,7 @@ function ReportManage() {
         <div className="block sm:hidden my-[30px]">
           <div className="flex flex-col">
             <p className="font-medium text-[#C0A172] text-[35px] md:text-[40px] mb-[20px]">
-            Manage Report
+              Manage Report
             </p>
           </div>
         </div>
@@ -177,7 +203,7 @@ function ReportManage() {
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex justify-end">
                         <Link
-                          to={`/editevent/${event._id}`}
+                          to={`/editreport`}
                           className="text-white min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
                         >
                           <IconCom icon="edit" />
@@ -201,40 +227,42 @@ function ReportManage() {
                           <p className="text-black truncate overflow-hidden whitespace-nowrap">
                             {event._id}-{event.eventname}
                           </p>
-                          <p className="font-extralight text-black">{event.formattedCreatedAt}</p>
+                          <p className="font-extralight text-black">
+                            {event.formattedCreatedAt}
+                          </p>
                         </div>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
                       <div className="flex items-center text-white justify-end">
-                      {(() => {
-                        switch (event.eventtype) {
-                          case "pending":
-                            return (
-                              <div className="px-2 py-0 rounded-2xl bg-[#B1B1B1] flex items-center justify-center border border-solid border-white">
-                                <p>pending</p>
-                              </div>
-                            );
-                          case "processing":
-                            return (
-                              <div className="px-2 py-0 rounded-2xl bg-[#C0A172] flex items-center justify-center border border-solid border-white">
-                                <p>processing</p>
-                              </div>
-                            );
-                          case "completed":
-                            return (
-                              <div className="px-2 py-0 rounded-2xl bg-[#5A7654] flex items-center justify-center border border-solid border-white">
-                                <p>completed</p>
-                              </div>
-                            );
-                          default:
-                            return (
-                              <div className="px-2 py-0 rounded-2xl bg-[#54174E] flex items-center justify-center border border-solid border-white">
-                                <p>{event.eventtype}</p>
-                              </div>
-                            );
-                        }
-                      })()}
+                        {(() => {
+                          switch (event.eventtype) {
+                            case "pending":
+                              return (
+                                <div className="px-2 py-0 rounded-2xl bg-[#B1B1B1] flex items-center justify-center border border-solid border-white">
+                                  <p>pending</p>
+                                </div>
+                              );
+                            case "processing":
+                              return (
+                                <div className="px-2 py-0 rounded-2xl bg-[#C0A172] flex items-center justify-center border border-solid border-white">
+                                  <p>processing</p>
+                                </div>
+                              );
+                            case "completed":
+                              return (
+                                <div className="px-2 py-0 rounded-2xl bg-[#5A7654] flex items-center justify-center border border-solid border-white">
+                                  <p>completed</p>
+                                </div>
+                              );
+                            default:
+                              return (
+                                <div className="px-2 py-0 rounded-2xl bg-[#54174E] flex items-center justify-center border border-solid border-white">
+                                  <p>{event.eventtype}</p>
+                                </div>
+                              );
+                          }
+                        })()}
                         <button
                           onClick={() => togglePopup(event)}
                           className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
@@ -290,7 +318,7 @@ function ReportManage() {
                 </button>
               </div>
               <Link
-                to={selectedEvent ? `/editevent/${selectedEvent._id}` : '#'}
+                to={selectedEvent ? `/editevent/${selectedEvent._id}` : "#"}
                 onClick={handleEdit}
                 className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
               >

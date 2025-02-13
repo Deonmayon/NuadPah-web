@@ -3,7 +3,6 @@ import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import Navmenu from "../components/Navmenu";
 
-
 import { Link, useNavigate } from "react-router-dom";
 
 function CreateSingle() {
@@ -106,12 +105,12 @@ function CreateSingle() {
   return (
     <div className="bg-white w-full h-full min-h-dvh font-kanit">
       <Nav />
-      <Navmenu className='z-50' />
+      <Navmenu className="z-50" />
       <div className="mt-[120px] px-2 sm:px-4 md:px-6 lg:px-16 max-w-[1250px] mx-auto h-full flex justify-center">
         <div className="mt-[30px] w-full flex flex-col items-center">
           <div className="h-[70px] w-full flex flex-row items-center">
             <Link
-              to="/manageevent"
+              to="/singlemanage"
               className="flex px-3 py-2 rounded-lg items-center border-2 border-solid border-[#C0A172] text-[#C0A172] transition-all duration-300 hover:bg-[#DBDBDB]"
             >
               <IconCom icon="left" size="18" />
@@ -155,7 +154,7 @@ function CreateSingle() {
                 ></input>
               </div>
               <div className="w-1/2 h-full pl-[20px] text-white text-[14px] font-medium">
-                <p className="mb-[10px] text-black">Name Event</p>
+                <p className="mb-[10px] text-black">Name</p>
                 <input
                   type="text"
                   onChange={handleInput}
@@ -164,7 +163,7 @@ function CreateSingle() {
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 />
-                <p className="mt-[15px] mb-[10px] text-black">Detail Event</p>
+                <p className="mt-[15px] mb-[10px] text-black">Detail</p>
                 <textarea
                   type="text"
                   onChange={handleInput}
@@ -175,7 +174,7 @@ function CreateSingle() {
                   rows="8"
                   placeholder="Tell about event"
                 ></textarea>
-                <p className="mt-[15px] mb-[10px] text-black">Type Event</p>
+                <p className="mt-[15px] mb-[10px] text-black">Type</p>
                 <select
                   onChange={handleInput}
                   name="eventtype"
@@ -187,7 +186,7 @@ function CreateSingle() {
                   <option value="festival">Shoulder</option>
                   <option value="concert">Neck</option>
                 </select>
-                <p className="mt-[15px] mb-[10px] text-black">Type Event</p>
+                <p className="mt-[15px] mb-[10px] text-black">Time</p>
                 <select
                   onChange={handleInput}
                   name="eventtype"

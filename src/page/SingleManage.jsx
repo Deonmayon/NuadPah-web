@@ -9,21 +9,104 @@ function SingleManage() {
   const navigate = useNavigate();
 
   const mockEvents = [
-    { _id: "1", eventname: "Music Concert", artistname: "5", eventtype: "back", eventimage: "event1.jpg", formattedCreatedAt: "2025-02-01" },
-    { _id: "2", eventname: "Art Festival", artistname: "10", eventtype: "shoulder", eventimage: "event2.jpg", formattedCreatedAt: "2025-01-20" },
-    { _id: "3", eventname: "Pub Night", artistname: "15", eventtype: "neck", eventimage: "event3.jpg", formattedCreatedAt: "2025-01-15" },
-    { _id: "4", eventname: "Internal Showcase", artistname: "7", eventtype: "back", eventimage: "event4.jpg", formattedCreatedAt: "2025-01-10" },
-    { _id: "1", eventname: "Music Concert", artistname: "5", eventtype: "shoulder", eventimage: "event1.jpg", formattedCreatedAt: "2025-02-01" },
-    { _id: "2", eventname: "Art Festival", artistname: "10", eventtype: "neck", eventimage: "event2.jpg", formattedCreatedAt: "2025-01-20" },
-    { _id: "3", eventname: "Pub Night", artistname: "15", eventtype: "back", eventimage: "event3.jpg", formattedCreatedAt: "2025-01-15" },
-    { _id: "4", eventname: "Internal Showcase", artistname: "7", eventtype: "neck", eventimage: "event4.jpg", formattedCreatedAt: "2025-01-10" },
-    { _id: "1", eventname: "Music Concert", artistname: "5", eventtype: "shoulder", eventimage: "event1.jpg", formattedCreatedAt: "2025-02-01" },
-    { _id: "2", eventname: "Art Festival", artistname: "10", eventtype: "back", eventimage: "event2.jpg", formattedCreatedAt: "2025-01-20" },
-    { _id: "3", eventname: "Pub Night", artistname: "15", eventtype: "shoulder", eventimage: "event3.jpg", formattedCreatedAt: "2025-01-15" },
-    { _id: "4", eventname: "Internal Showcase", artistname: "7", eventtype: "neck", eventimage: "event4.jpg", formattedCreatedAt: "2025-01-10" },
+    {
+      _id: "1",
+      eventname: "Music Concert",
+      artistname: "5",
+      eventtype: "Back",
+      eventimage: "event1.jpg",
+      formattedCreatedAt: "2025-02-01",
+    },
+    {
+      _id: "2",
+      eventname: "Art Festival",
+      artistname: "10",
+      eventtype: "Shoulder",
+      eventimage: "event2.jpg",
+      formattedCreatedAt: "2025-01-20",
+    },
+    {
+      _id: "3",
+      eventname: "Pub Night",
+      artistname: "15",
+      eventtype: "Neck",
+      eventimage: "event3.jpg",
+      formattedCreatedAt: "2025-01-15",
+    },
+    {
+      _id: "4",
+      eventname: "Internal Showcase",
+      artistname: "7",
+      eventtype: "Back",
+      eventimage: "event4.jpg",
+      formattedCreatedAt: "2025-01-10",
+    },
+    {
+      _id: "1",
+      eventname: "Music Concert",
+      artistname: "5",
+      eventtype: "Shoulder",
+      eventimage: "event1.jpg",
+      formattedCreatedAt: "2025-02-01",
+    },
+    {
+      _id: "2",
+      eventname: "Art Festival",
+      artistname: "10",
+      eventtype: "Neck",
+      eventimage: "event2.jpg",
+      formattedCreatedAt: "2025-01-20",
+    },
+    {
+      _id: "3",
+      eventname: "Pub Night",
+      artistname: "15",
+      eventtype: "Back",
+      eventimage: "event3.jpg",
+      formattedCreatedAt: "2025-01-15",
+    },
+    {
+      _id: "4",
+      eventname: "Internal Showcase",
+      artistname: "7",
+      eventtype: "Neck",
+      eventimage: "event4.jpg",
+      formattedCreatedAt: "2025-01-10",
+    },
+    {
+      _id: "1",
+      eventname: "Music Concert",
+      artistname: "5",
+      eventtype: "Shoulder",
+      eventimage: "event1.jpg",
+      formattedCreatedAt: "2025-02-01",
+    },
+    {
+      _id: "2",
+      eventname: "Art Festival",
+      artistname: "10",
+      eventtype: "Back",
+      eventimage: "event2.jpg",
+      formattedCreatedAt: "2025-01-20",
+    },
+    {
+      _id: "3",
+      eventname: "Pub Night",
+      artistname: "15",
+      eventtype: "Shoulder",
+      eventimage: "event3.jpg",
+      formattedCreatedAt: "2025-01-15",
+    },
+    {
+      _id: "4",
+      eventname: "Internal Showcase",
+      artistname: "7",
+      eventtype: "Neck",
+      eventimage: "event4.jpg",
+      formattedCreatedAt: "2025-01-10",
+    },
   ];
 
-  
   const [data, setData] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -84,7 +167,7 @@ function SingleManage() {
               Manage Single Massages
             </p>
             <Link
-              to="/createevent"
+              to="/createsingle"
               className="min-h-[40px] max-h-[40px] h-full px-2 bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium transition-all duration-300"
             >
               + Create Massage
@@ -96,7 +179,10 @@ function SingleManage() {
             <p className="font-medium text-[#C0A172] text-[35px] md:text-[40px] mb-[20px]">
               Manage Single Massages
             </p>
-            <Link to='/createevent' className="min-h-[40px] max-h-[40px] h-full min-w-[150px] max-w-[150px] w-full bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium">
+            <Link
+              to="/createevent"
+              className="min-h-[40px] max-h-[40px] h-full min-w-[150px] max-w-[150px] w-full bg-[#C0A172] flex justify-center items-center rounded-md text-white font-medium"
+            >
               + Create Massage
             </Link>
           </div>
@@ -127,7 +213,7 @@ function SingleManage() {
             <thead className="table-header-group">
               <tr className="md:table-row hidden">
                 <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
-                  Name Maasage
+                  Name
                 </th>
                 <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
                   Time
@@ -164,20 +250,23 @@ function SingleManage() {
                       {`${event.artistname} minutes`}
                     </td>
                     <td className="h-[70px] text-black table-cell text-left align-middle px-4 text-[13px] font-medium">
-                    {event.eventtype}
+                      {event.eventtype}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       {event.formattedCreatedAt}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex justify-end">
-                        <Link to={`/editevent/${event._id}`} 
-                        className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]">
+                        <Link
+                          to={`/editevent/${event._id}`}
+                          className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
+                        >
                           <IconCom icon="edit" />
                         </Link>
-                        <button 
-                        onClick={() => handleDelete(event._id)}
-                        className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C]">
+                        <button
+                          onClick={() => handleDelete(event._id)}
+                          className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C]"
+                        >
                           <IconCom icon="trash" />
                         </button>
                       </div>
@@ -263,7 +352,7 @@ function SingleManage() {
                 </button>
               </div>
               <Link
-                to={selectedEvent ? `/editevent/${selectedEvent._id}` : '#'}
+                to={selectedEvent ? `/editevent/${selectedEvent._id}` : "#"}
                 onClick={handleEdit}
                 className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
               >
@@ -281,7 +370,6 @@ function SingleManage() {
           </div>
         </>
       )}
-      
     </div>
   );
 }
