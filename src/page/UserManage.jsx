@@ -1,54 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 function UserManage() {
-  const mockData = [
-    {
-      _id: "1",
-      username: "John Doe",
-      email: "john@example.com",
-      role: "admin",
-      formattedCreatedAt: "2025-01-01",
-      eventimage: "event1.jpg",
-    },
-    {
-      _id: "2",
-      username: "Jane Smith",
-      email: "jane@example.com",
-      role: "user",
-      formattedCreatedAt: "2025-02-01",
-      eventimage: "event1.jpg",
-    },
-    {
-      _id: "3",
-      username: "Alice Johnson",
-      email: "alice@example.com",
-      role: "user",
-      formattedCreatedAt: "2025-03-01",
-      eventimage: "event1.jpg",
-    },
-    {
-      _id: "4",
-      username: "Bob Brown",
-      email: "bob@example.com",
-      role: "admin",
-      formattedCreatedAt: "2025-04-01",
-      eventimage: "event1.jpg",
-    },
-    {
-      _id: "5",
-      username: "Emma Davis",
-      email: "emma@example.com",
-      role: "user",
-      formattedCreatedAt: "2025-05-01",
-      eventimage: "event1.jpg",
-    },
-    // เพิ่มข้อมูลเพิ่มเติมหากจำเป็น
-  ];
   const navigate = useNavigate();
 
   const [data, setData] = useState([]);
@@ -66,11 +24,31 @@ function UserManage() {
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    // Simulate fetching data
-    setTimeout(() => {
-      setData(mockData);
-    }, 500);
+    GetUserList();
   }, []);
+
+  const GetUserList = async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/admin/get-users");
+      // console.log(response.data.data);
+
+      const res_data = response.data.data;
+
+      const signedImages = await Promise.all(
+        res_data.map(async (user) => {
+          const load_response = await axios.get(
+            `http://localhost:3000/image/download/${user.image_name}`
+          );
+          const res_data = load_response.data.data;
+          return { ...user, image_name: res_data, password: "1234567890" };
+        })
+      );
+      // console.log(signedImages);
+      setData(signedImages);
+    } catch (error) {
+      console.error("Error fetching Users:", error);
+    }
+  };
 
   const togglePopup = (user) => {
     setShowPopup(!showPopup);
@@ -96,11 +74,20 @@ function UserManage() {
     confirm("Are you sure to delete this user");
   };
 
-  const handleDelete = (id) => {
-    togglePopup();
-    const confirmed = window.confirm("Are you sure to delete this event?");
-    if (confirmed) {
-      setData((prevData) => prevData.filter((event) => event._id !== id));
+  const handleDelete = async (id) => {
+    // togglePopup();
+    try {
+      const confirmed = window.confirm("Are you sure to delete this user?");
+
+      if (!confirmed) return;
+
+      const response = await axios.delete(
+        `http://localhost:3000/admin/delete-user/${id}`
+      );
+      console.log(response.data.data);
+      setData((prevData) => prevData.filter((event) => event.id !== id));
+    } catch (error) {
+      console.error("Error deleting this user:", error);
     }
   };
 
@@ -144,7 +131,7 @@ function UserManage() {
                     Email
                   </th>
                   <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
-                    Created At
+                    Password
                   </th>
                   <th className="h-[70px] table-cell text-left align-middle px-4"></th>
                 </tr>
@@ -158,13 +145,13 @@ function UserManage() {
                           <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-full flex justify-center items-center mr-[8px]">
                             <img
                               key={index}
-                              src={"./images/" + user.eventimage}
+                              src={user.image_name}
                               alt="Event"
                               className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-full"
                             />
                           </div>
                           <p className="truncate overflow-hidden whitespace-nowrap">
-                            {user.username}
+                            {user.firstname} {user.lastname}
                           </p>
                         </div>
                       </td>
@@ -174,18 +161,24 @@ function UserManage() {
                       </td>
 
                       <td className="h-[70px] table-cell text-left align-middle px-4">
-                        {user.formattedCreatedAt}
+                        ********
                       </td>
                       <td className="h-[70px] table-cell text-left align-middle px-4">
                         <div className="flex justify-end">
-                          <Link
-                            to={`/edituser`}
+                          <button
+                            onClick={() => {
+                              localStorage.setItem(
+                                "edit_user_id",
+                                JSON.stringify(user)
+                              );
+                              navigate(`/edituser`);
+                            }}
                             className="transition-all text-white duration-300 hover:bg-[#C0A172] min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center"
                           >
                             <IconCom icon="edit" />
-                          </Link>
+                          </button>
                           <button
-                            onClick={() => handleDelete(user._id)}
+                            onClick={() => handleDelete(user.id)}
                             className="transition-all text-white duration-300 bg-[#FF5757] ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full hover:bg-[#942423] rounded-lg flex justify-center items-center"
                           >
                             <IconCom icon="trash" />
@@ -201,13 +194,15 @@ function UserManage() {
                         <div className="flex items-center">
                           <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-full flex justify-center items-center mr-[8px]">
                             <img
-                              src={"./images/" + user.eventimage}
+                              src={user.image_name}
                               alt="Event"
                               className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-full"
                             />
                           </div>
                           <div className="flex flex-col">
-                            <p className="text-black">{user.username}</p>
+                            <p className="text-black">
+                              {user.firstname} {user.lastname}
+                            </p>
                             <p className="font-extralight text-black">
                               {user.email}
                             </p>

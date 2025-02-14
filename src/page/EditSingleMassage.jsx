@@ -8,7 +8,15 @@ import { Link, useNavigate } from "react-router-dom";
 
 function EditSingleMassge() {
   const [image1, setImage1] = useState(null);
-  const [editData, setEditData] = useState({});
+  const [editData, setEditData] = useState({
+    mt_id: 0,
+    mt_name: "",
+    mt_type: "",
+    mt_time: 0,
+    mt_round: 0,
+    mt_detail: "",
+    mt_image_name: "",
+  });
   const [previewImage1, setPreviewImage1] = useState(null);
 
   const navigate = useNavigate();
@@ -17,10 +25,10 @@ function EditSingleMassge() {
     GetSelectedMassage();
   }, []);
 
-  const GetSelectedMassage = () => {
-    const oldData = JSON.parse(localStorage.getItem("edit_massage_id"));
-    console.log(oldData);
+  const GetSelectedMassage = async () => {
+    const oldData = await JSON.parse(localStorage.getItem("edit_massage_id"));
 
+    setPreviewImage1(oldData.mt_image_name);
     setEditData(oldData);
   };
 
@@ -29,14 +37,15 @@ function EditSingleMassge() {
       ...prev,
       [event.target.name]: event.target.value,
     }));
+
   };
 
   const onInputChange1 = (e) => {
     const file = e.target.files[0];
     setImage1(file);
 
-    // Preview image
     if (file) {
+      // Preview image
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage1(reader.result);
@@ -47,37 +56,59 @@ function EditSingleMassge() {
     }
   };
 
-  const handleSubmit = (e) => {
+  function extractFileName(url) {
+    const cleanFileName = url.split("/").pop().split("?")[0];
+
+    return cleanFileName;
+  }
+
+  const EditSingleMassage = async (image_name) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/admin/edit-single-massage/${editData.mt_id}`,
+        {
+          mt_name: editData.mt_name,
+          mt_type: editData.mt_type,
+          mt_round: editData.mt_round,
+          mt_time: editData.mt_time,
+          mt_detail: editData.mt_detail,
+          mt_image_name: image_name,
+        }
+      );
+
+      console.log(response.data.data);
+    } catch (error) {
+      console.error("Error editing single massage:", error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      if (image1) {
+        const formData = new FormData();
+        formData.append("image", image1);
 
-    // const updateData = {
-    //   namemassage,
-    //   detailmassage,
-    //   typemassage,
-    //   time,
-    //   round,
-    // };
+        const upload_response = await axios.post(
+          "http://localhost:3000/image/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        EditSingleMassage(upload_response.data.data);
+      } else {
+        const oldFileName = extractFileName(editData.mt_image_name);
+        EditSingleMassage(oldFileName);
+      }
 
-    // const formData = new FormData();
-
-    // // Append image1 only if it exists
-    // if (image1) {
-    //   formData.append("imagemassage", image1);
-    // }
-
-    // // Append other updateData fields
-    // for (let key in updateData) {
-    //   formData.append(key, updateData[key]);
-    // }
-
-    // axios
-    //   .put("http://localhost:3002/update-event/" + id, formData, {
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //   })
-    //   .then((res) => {
-    //     window.location.reload();
-    //   })
-    //   .catch((err) => console.log(err));
+      alert("Single Massage Technique edited successfully!");
+      navigate("/singlemanage");
+    } catch (error) {
+      console.error("Error editing single massage:", error);
+    }
   };
 
   return (

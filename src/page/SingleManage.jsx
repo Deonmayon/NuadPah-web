@@ -73,11 +73,22 @@ function SingleManage() {
     togglePopup();
   };
 
-  const handleDelete = (id) => {
-    togglePopup();
-    const confirmed = window.confirm("Are you sure to delete this event?");
-    if (confirmed) {
-      setData((prevData) => prevData.filter((event) => event.mt_id !== id));
+  const handleDelete = async (mt_id) => {
+    // togglePopup();
+    try {
+      const confirmed = window.confirm(
+        "Are you sure to delete this single massage technique?"
+      );
+
+      if (!confirmed) return;
+
+      const response = await axios.delete(
+        `http://localhost:3000/admin/delete-single-massage/${mt_id}`
+      );
+      console.log(response.data.data);
+      setData((prevData) => prevData.filter((event) => event.mt_id !== mt_id));
+    } catch (error) {
+      console.error("Error editing single massage:", error);
     }
   };
 

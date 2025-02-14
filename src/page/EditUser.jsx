@@ -1,47 +1,51 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function EditUser() {
-  const { id } = useParams();
-
   const [image1, setImage1] = useState(null);
   const [previewImage1, setPreviewImage1] = useState(null);
-
-  const [initialUsername, setInitialUsername] = useState("");
-  const [username, setUsername] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [editData, setEditData] = useState({
+    id: 0,
+    email: "",
+    firstname: "",
+    lastname: "",
+    password: "",
+    image_name: "",
+  });
 
   const navigate = useNavigate();
 
   // Mockup user data
   useEffect(() => {
-    // Simulate fetching user data
-    const mockUserData = {
-      id: 1,
-      username: "John",
-      lastname: "Doe",
-      email: "johndoe@example.com",
-      image:
-        "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
-    };
+    GetSelectedUser();
+  }, []);
 
-    setInitialUsername(mockUserData.username);
-    setUsername(mockUserData.username);
-    setLastname(mockUserData.lastname);
-    setEmail(mockUserData.email);
-    setPreviewImage1(mockUserData.image); // Set the initial image preview
-  }, [id]);
+  const GetSelectedUser = async () => {
+    const oldData = await JSON.parse(localStorage.getItem("edit_user_id"));
+
+    setPreviewImage1(oldData.image_name);
+    setEditData(oldData);
+
+    console.log(oldData);
+  };
+
+  const handleInput = (event) => {
+    setEditData((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
   const onInputChange1 = (e) => {
     const file = e.target.files[0];
     setImage1(file);
 
-    // Preview image
     if (file) {
+      // Preview image
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage1(reader.result);
@@ -52,29 +56,69 @@ function EditUser() {
     }
   };
 
-  const handleUpdate = (e) => {
+  function extractFileName(url) {
+    const cleanFileName = url.split("/").pop().split("?")[0];
+
+    return cleanFileName;
+  }
+
+  const EditUser = async (image_name) => {
+    console.log(editData);
+    console.log(image_name);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/admin/edit-user/${editData.id}`,
+        {
+          email: editData.email,
+          firstname: editData.firstname,
+          lastname: editData.lastname,
+          password: editData.password,
+          image_name: image_name,
+        }
+      );
+
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error editing user:", error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const updateData = {
-      username,
-      lastname,
-      email,
-      image,
-    };
+    try {
+      if (image1) {
+        const formData = new FormData();
+        formData.append("image", image1);
 
-    if (password.trim() !== "") {
-      updateData.password = password; // Include password only if it's not empty
+        const upload_response = await axios.post(
+          "http://localhost:3000/image/upload",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        EditUser(upload_response.data.data);
+      } else {
+        const oldFileName = extractFileName(editData.image_name);
+        EditUser(oldFileName);
+      }
+
+      alert("User edited successfully!");
+      navigate("/usermanage");
+    } catch (error) {
+      console.error("Error editing single massage:", error);
     }
-
-    // Simulate updating user data
-    console.log("Updated user data:", updateData);
   };
 
   return (
     <div className="bg-white w-full h-full min-h-dvh font-kanit">
       <Nav />
       <form
-        onSubmit={handleUpdate}
+        onSubmit={handleSubmit}
         className="mt-[120px] px-2 sm:px-4 lg:px-6 max-w-[1250px] mx-auto h-full flex justify-center"
       >
         <div className="mt-[30px] h-[540px] w-[420px] flex flex-col items-center">
@@ -88,7 +132,7 @@ function EditUser() {
             </Link>
             <div className="ml-[15px] flex flex-col justify-evenly h-full">
               <p className="text-[#C0A172] font-medium text-[16px]">
-                1-{initialUsername}
+                {editData.firstname} {editData.lastname}
               </p>
               <p className="text-black font-medium text-[20px]">Edit User</p>
             </div>
@@ -98,18 +142,17 @@ function EditUser() {
               Image
             </p>
             <div className="w-full rounded-md aspect-square bg-[#DBDBDB] my-[10px] relative">
-              {!previewImage1 && (
-                <div className="w-full h-full flex items-center justify-center absolute z-10">
-                  <p className="text-[30px] font-medium text-black">
-                    500 x 500
-                  </p>
-                </div>
-              )}
-              {previewImage1 && (
+              {previewImage1 ? (
                 <img
                   src={previewImage1}
                   alt="Preview 1"
-                  className="object-cover h-full w-full rounded-md absolute z-20"
+                  className="object-cover h-full w-full rounded-md"
+                />
+              ) : (
+                <img
+                  src={image1}
+                  alt="Event"
+                  className="object-cover h-full w-full rounded-md"
                 />
               )}
             </div>
@@ -123,13 +166,13 @@ function EditUser() {
             <div className="mt-[15px] mb-[10px] flex">
               <div className="w-1/2 pr-[5px]">
                 <p className="mb-[10px] text-black font-medium text-[14px]">
-                  Username
+                  Firstname
                 </p>
                 <input
                   type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  name="First Name"
+                  value={editData.firstname}
+                  onChange={handleInput}
+                  name="firstname"
                   placeholder="First Name"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                       focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -141,9 +184,9 @@ function EditUser() {
                 </p>
                 <input
                   type="text"
-                  value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
-                  name="Last Name"
+                  value={editData.lastname}
+                  onChange={handleInput}
+                  name="lastname"
                   placeholder="Last Name"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                       focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -157,21 +200,23 @@ function EditUser() {
               type="text"
               className="h-[40px] w-full rounded-md my-[10px] pl-2 focus:outline-none bg-[#DBDBDB] text-black
               focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              value={email}
-              placeholder="Email"
-              onChange={(e) => setEmail(e.target.value)}
+              value={editData.email}
+              placeholder="email"
+              onChange={handleInput}
+              name="email"
             />
 
             <p className="mt-[10px] text-black font-medium text-[14px]">
-              Change Password
+              New Password
             </p>
             <input
               type="password"
               className="h-[40px] w-full rounded-md my-[10px] pl-2 focus:outline-none bg-[#DBDBDB] text-black
               focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
               placeholder="New Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={editData.password}
+              onChange={handleInput}
+              name="password"
             />
             <button
               type="submit"
