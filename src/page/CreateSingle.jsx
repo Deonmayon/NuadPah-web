@@ -1,32 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import Navmenu from "../components/Navmenu";
+import axios from "axios";
+import { createClient } from '@supabase/supabase-js';
+
 
 import { Link, useNavigate } from "react-router-dom";
 
 function CreateSingle() {
-  const [image1, setImage1] = useState(null);
-  const [allImage, setAllImage] = useState(null);
   const [previewImage1, setPreviewImage1] = useState(null);
   const [values, setValue] = useState({
-    namemassage: "",
-    detailmassage: "",
-    typemassage: "",
-    time: "",
-    round: "",
+    mt_name: "",
+    mt_detail: "",
+    mt_type: "",
+    mt_time: "",
+    mt_round: "",
   });
+  const [uploadedImage, setUploadedImage] = useState(null);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Mockup data
-    const mockEvents = [
-      { id: 1, eventname: "Rock Festival", eventimage: "event1.jpg" },
-      { id: 2, eventname: "Jazz Night", eventimage: "event2.jpg" },
-    ];
-    setAllImage(mockEvents);
-  }, []);
 
   const handleInput = (event) => {
     setValue((prev) => ({
@@ -35,9 +28,32 @@ function CreateSingle() {
     }));
   };
 
-  const onInputChange1 = (e) => {
+  const onInputChange1 = async (e) => {
     const file = e.target.files[0];
-    setImage1(file);
+    if (file) {
+        e.preventDefault();
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append("image", file);
+
+        try {
+          const upload_response = await axios.post(
+            "http://localhost:3000/image/upload",
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          console.log(upload_response.data);
+
+          setUploadedImage(upload_response.data.data);
+          // console.log(url);
+        } catch (error) {
+          console.error("Error uploading image:", error);
+        }
+    }
 
     // Preview image
     if (file) {
@@ -51,18 +67,23 @@ function CreateSingle() {
     }
   };
 
-  const submitImage = (e) => {
+  const submitImage = async (e) => {
     e.preventDefault();
 
     const formData = {
-      eventimage: image1,
+      mt_image_name: uploadedImage,
       ...values,
     };
 
-    // Mock response and navigation
-    console.log("Event Submitted:", formData);
-    alert("Event created successfully!");
-    navigate("/singlemanage");
+    console.log(formData);
+    // Send data to API
+    try {
+      const response = await axios.post("http://localhost:3000/admin/add-single-massage", formData);
+      console.log("Data submitted successfully:", response.data);
+      navigate("/singlemanage");
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
   };
 
   return (
@@ -121,7 +142,7 @@ function CreateSingle() {
                 <input
                   type="text"
                   onChange={handleInput}
-                  name="namemassage"
+                  name="mt_name"
                   placeholder="Name Massage"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -130,7 +151,7 @@ function CreateSingle() {
                 <textarea
                   type="text"
                   onChange={handleInput}
-                  name="detailmassage"
+                  name="mt_detail"
                   className="w-full pl-2 pt-2 rounded-md bg-[#DBDBDB] text-black focus:outline-none
                   focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                   id=""
@@ -140,7 +161,7 @@ function CreateSingle() {
                 <p className="mt-[15px] mb-[10px] text-black">Type</p>
                 <select
                   onChange={handleInput}
-                  name="typemassage"
+                  name="mt_type"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
@@ -152,7 +173,7 @@ function CreateSingle() {
                 <p className="mt-[15px] mb-[10px] text-black">Time</p>
                 <select
                   onChange={handleInput}
-                  name="time"
+                  name="mt_time"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                 >
@@ -167,7 +188,7 @@ function CreateSingle() {
                 <input
                   type="number"
                   onChange={handleInput}
-                  name="round"
+                  name="mt_round"
                   placeholder="Type Number"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -178,95 +199,6 @@ function CreateSingle() {
                 </button>
               </div>
             </div>
-            <div className="block md:hidden w-full h-full text-white text-[14px] font-medium">
-              <p className="mb-[10px] text-black">Image</p>
-              <div className="w-full  rounded-md aspect-square bg-[#DBDBDB] my-[10px] relative">
-                {!previewImage1 && (
-                  <div className="w-full h-full flex items-center justify-center absolute z-10">
-                    <p className="text-[30px] font-medium text-black">
-                      500 x 500
-                    </p>
-                  </div>
-                )}
-                {previewImage1 && (
-                  <img
-                    src={previewImage1}
-                    alt="Preview 1"
-                    className="object-cover h-full w-full rounded-md absolute z-20"
-                  />
-                )}
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={onInputChange1}
-                className="px-3 py-2 my-[10px] h-[40px] w-full rounded-md bg-[#DBDBDB] flex text-black 
-                file:border-0 file:bg-[#DBDBDB] file:text-[14px] file:font-medium file:text-black"
-              ></input>
-
-              <p className="mt-[15px] mb-[10px] text-black">Name Massage</p>
-              <input
-                type="text"
-                onChange={handleInput}
-                name="namemassage"
-                placeholder="Name Massage"
-                className="h-[40px] w-full rounded-md pl-2 focus:outline-none bg-[#DBDBDB] text-black
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              />
-              <p className="mt-[15px] mb-[10px] text-black">Detail</p>
-              <textarea
-                className="w-full pl-2 pt-2 rounded-md bg-[#DBDBDB] text-black focus:outline-none
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-                type="text"
-                onChange={handleInput}
-                name="detailmassage"
-                id=""
-                rows="8"
-                placeholder="Tell about massage"
-              ></textarea>
-              <p className="mt-[15px] mb-[10px] text-black">Type</p>
-              <select
-                onChange={handleInput}
-                name="typemassage"
-                className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              >
-                <option>Select Type</option>
-                <option value="back">Back</option>
-                <option value="shoulder">Shoulder</option>
-                <option value="neck">Neck</option>
-              </select>
-              <p className="mt-[15px] mb-[10px] text-black">Time</p>
-              <select
-                onChange={handleInput}
-                name="time"
-                className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              >
-                <option>Select Time</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-              </select>
-
-              <p className="mt-[15px] mb-[10px] text-black">Round</p>
-              <input
-                type="number"
-                onChange={handleInput}
-                name="round"
-                placeholder="Type Number"
-                className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              />
-
-              <button
-                type="submit"
-                className="text-[18px] h-[40px] w-full rounded-lg mt-[40px] bg-[#C0A172] text-center font-medium text-white hover:bg-[#C0A172]"
-              >
-                Create Single Massage
-              </button>
-            </div>
           </form>
         </div>
       </div>
@@ -275,3 +207,4 @@ function CreateSingle() {
 }
 
 export default CreateSingle;
+
