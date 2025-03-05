@@ -2,49 +2,59 @@ import React, { useEffect, useState } from "react";
 import IconCom from "../components/IconCom";
 import Nav from "../components/Nav";
 import Navmenu from "../components/Navmenu";
+import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
 
 function SingleManage() {
   const navigate = useNavigate();
-  const mockdata = [
-    {
-      _id: "1",
-      namemassage: "Name Massage",
-      time: "5",
-      typemassage: "Back",
-      image: "https://picsum.photos/id/19/200/200",
-      formattedCreatedAt: "2025-02-01",
-    },
-    {
-      _id: "2",
-      namemassage: "Name Massage",
-      time: "15",
-      typemassage: "Shoulder",
-      image: "https://picsum.photos/id/13/200/200",
-      formattedCreatedAt: "2025-02-01",
-    },
-  ];
+  // const massagedata = [
+  //   {
+  //     _id: "1",
+  //     namemassage: "Name Massage",
+  //     time: "5",
+  //     typemassage: "Back",
+  //     image: "https://picsum.photos/id/19/200/200",
+  //     formattedCreatedAt: "2025-02-01",
+  //   },
+  //   {
+  //     _id: "2",
+  //     namemassage: "Name Massage",
+  //     time: "15",
+  //     typemassage: "Shoulder",
+  //     image: "https://picsum.photos/id/13/200/200",
+  //     formattedCreatedAt: "2025-02-01",
+  //   },
+  // ];
 
-  const [data, setData] = useState([]);
+  const [massagedata, setMassagedata] = useState([]);
+
+  const apiUrl = "http://localhost:3000/massage";
 
   const [currentPage, setCurrentPage] = useState(1);
   const eventPerPage = 10;
-  const totalPages = Math.ceil(data.length / eventPerPage);
+  const totalPages = Math.ceil(massagedata.length / eventPerPage);
   const indexOfLastEvent = currentPage * eventPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventPerPage;
-  const currentEvents = Array.isArray(data)
-    ? data.slice(indexOfFirstEvent, indexOfLastEvent)
+  const currentEvents = Array.isArray(massagedata)
+    ? massagedata.slice(indexOfFirstEvent, indexOfLastEvent)
     : [];
 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
-    // Simulate fetching data
-    setTimeout(() => {
-      setData(mockdata);
-    }, 500);
+    const fetchMassage = async () => {
+      try {
+      const res = await axios.get(`${apiUrl}/single-list`);
+      console.log(res.data.data);
+      setMassagedata(res.data.data);
+      } catch (error) {
+      console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchMassage();
   }, []);
 
   const togglePopup = (event) => {
@@ -71,7 +81,7 @@ function SingleManage() {
     togglePopup();
     const confirmed = window.confirm("Are you sure to delete this event?");
     if (confirmed) {
-      setData((prevData) => prevData.filter((event) => event._id !== id));
+      setMassagedata((prevData) => prevData.filter((event) => event._id !== id));
     }
   };
 
@@ -141,7 +151,7 @@ function SingleManage() {
                   Type
                 </th>
                 <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
-                  Created At
+                  Round
                 </th>
                 <th className="h-[70px] table-cell text-left align-middle px-4"></th>
               </tr>
@@ -155,24 +165,24 @@ function SingleManage() {
                         <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
                           <img
                             key={index}
-                            src={event.image}
+                            src={event.mt_image_name}
                             alt="Event"
                             className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
                           />
                         </div>
                         <p className="truncate overflow-hidden whitespace-nowrap">
-                          {event.namemassage}
+                          {event.mt_name}
                         </p>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
-                      {`${event.time} minutes`}
+                      {`${event.mt_time} minutes`}
                     </td>
                     <td className="h-[70px] text-black table-cell text-left align-middle px-4 text-[13px] font-medium">
-                      {event.typemassage}
+                      {event.mt_type}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
-                      {event.formattedCreatedAt}
+                      {event.mt_round}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex justify-end">
