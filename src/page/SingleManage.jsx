@@ -72,7 +72,6 @@ function SingleManage() {
   return (
     <div className="bg-white w-full h-full min-h-dvh font-kanit">
       <Nav className="z-20" />
-      <Navmenu />
       <div className="mt-[120px] px-2 sm:px-4 lg:px-6 max-w-[1440px] mx-auto h-full">
         <div className="hidden sm:block my-[30px]">
           <div className="flex justify-between items-center">

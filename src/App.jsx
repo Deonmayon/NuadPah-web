@@ -9,6 +9,7 @@ import EditReport from "./page/EditReport";
 import EditSingleMassge from "./page/EditSingleMassage";
 import CreateSet from "./page/CreateSet";
 import EditSet from "./page/EditSet";
+import Login from "./page/Login";
 
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
@@ -16,7 +17,6 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<SingleManage />}></Route>
         <Route path="/singlemanage" element={<SingleManage />}></Route>
         <Route path="/usermanage" element={<UserManage />}></Route>
         <Route path="/reportmanage" element={<ReportManage />}></Route>
@@ -27,6 +27,7 @@ function App() {
         <Route path="/editsinglemassage" element={<EditSingleMassge />}></Route>
         <Route path="/createset" element={<CreateSet />}></Route>
         <Route path="/editset" element={<EditSet />}></Route>
+        <Route path="/" element={<Login />}></Route>
       </Routes>
     </BrowserRouter>
   );
