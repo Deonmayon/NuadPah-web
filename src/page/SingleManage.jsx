@@ -8,28 +8,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 function SingleManage() {
   const navigate = useNavigate();
-  // const massagedata = [
-  //   {
-  //     _id: "1",
-  //     namemassage: "Name Massage",
-  //     time: "5",
-  //     typemassage: "Back",
-  //     image: "https://picsum.photos/id/19/200/200",
-  //     formattedCreatedAt: "2025-02-01",
-  //   },
-  //   {
-  //     _id: "2",
-  //     namemassage: "Name Massage",
-  //     time: "15",
-  //     typemassage: "Shoulder",
-  //     image: "https://picsum.photos/id/13/200/200",
-  //     formattedCreatedAt: "2025-02-01",
-  //   },
-  // ];
 
   const [massagedata, setMassagedata] = useState([]);
 
-  const apiUrl = "http://localhost:3000/massage";
+  const api = `${import.meta.env.VITE_API_URL}/massage`;
 
   const [currentPage, setCurrentPage] = useState(1);
   const eventPerPage = 10;
@@ -46,11 +28,11 @@ function SingleManage() {
   useEffect(() => {
     const fetchMassage = async () => {
       try {
-      const res = await axios.get(`${apiUrl}/single-list`);
-      console.log(res.data.data);
-      setMassagedata(res.data.data);
+        const res = await axios.get(`${api}/single-list`);
+        console.log(res.data.data);
+        setMassagedata(res.data.data);
       } catch (error) {
-      console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -81,7 +63,9 @@ function SingleManage() {
     togglePopup();
     const confirmed = window.confirm("Are you sure to delete this event?");
     if (confirmed) {
-      setMassagedata((prevData) => prevData.filter((event) => event._id !== id));
+      setMassagedata((prevData) =>
+        prevData.filter((event) => event._id !== id)
+      );
     }
   };
 

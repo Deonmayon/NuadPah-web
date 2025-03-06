@@ -3,8 +3,6 @@ import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import Navmenu from "../components/Navmenu";
 import axios from "axios";
-import { createClient } from '@supabase/supabase-js';
-
 
 import { Link, useNavigate } from "react-router-dom";
 
@@ -19,6 +17,8 @@ function CreateSingle() {
   });
   const [uploadedImage, setUploadedImage] = useState(null);
 
+  const api = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
 
   const handleInput = (event) => {
@@ -31,28 +31,28 @@ function CreateSingle() {
   const onInputChange1 = async (e) => {
     const file = e.target.files[0];
     if (file) {
-        e.preventDefault();
-        const file = e.target.files[0];
-        const formData = new FormData();
-        formData.append("image", file);
+      e.preventDefault();
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("image", file);
 
-        try {
-          const upload_response = await axios.post(
-            "http://localhost:3000/image/upload",
-            formData,
-            {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            }
-          );
-          console.log(upload_response.data);
+      try {
+        const upload_response = await axios.post(
+          `${api}/image/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(upload_response.data);
 
-          setUploadedImage(upload_response.data.data);
-          // console.log(url);
-        } catch (error) {
-          console.error("Error uploading image:", error);
-        }
+        setUploadedImage(upload_response.data.data);
+        // console.log(url);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
     }
 
     // Preview image
@@ -78,7 +78,10 @@ function CreateSingle() {
     console.log(formData);
     // Send data to API
     try {
-      const response = await axios.post("http://localhost:3000/admin/add-single-massage", formData);
+      const response = await axios.post(
+        `${api}/admin/add-single-massage`,
+        formData
+      );
       console.log("Data submitted successfully:", response.data);
       navigate("/singlemanage");
     } catch (error) {
@@ -207,4 +210,3 @@ function CreateSingle() {
 }
 
 export default CreateSingle;
-
