@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
+import axios from "axios";
 
-import { Link, useNavigate } from "react-router-dom";
+function UserProfile() {
+  const { id } = useParams();
+
+  return <h1>User ID: {id}</h1>;
+}
+
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function EditSingleMassge() {
   const [image1, setImage1] = useState(null);
-  const [allImage, setAllImage] = useState(null);
   const [previewImage1, setPreviewImage1] = useState(null);
-  
+  const [uploadedImage, setUploadedImage] = useState(null);
+
   const [namemassage, setNamemassage] = useState("");
   const [detailmassage, setDetailmassage] = useState("");
   const [typemassage, setTypemassage] = useState("");
@@ -16,29 +23,61 @@ function EditSingleMassge() {
   const [round, setRound] = useState("");
   const [imagemassage, setImagemassage] = useState("");
 
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
-  const mockEvents = [
-    { id: 1, namemassage: "Rock Festival", detailmassage: "hhhsafsdfsdfsdsf", typemassage: "back", time: "5", round: "10", imagemassage: "event1.jpg" }
-    ];
+  const api = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    // Mockup data
-    setNamemassage(mockEvents[0].namemassage);
-    setDetailmassage(mockEvents[0].detailmassage);
-    setTypemassage(mockEvents[0].typemassage);
-    setTime(mockEvents[0].time);
-    setRound(mockEvents[0].round);
-    setImagemassage(mockEvents[0].imagemassage);
-  }, []);
+    async function fetchMassage() {
+      try {
+        const res = await axios.post(`${api}/massage/single-detail`, {
+          mt_id: id,
+        });
+        const data = res.data.data;
+        console.log(data);
 
+        setNamemassage(data.mt_name);
+        setDetailmassage(data.mt_detail);
+        setTypemassage(data.mt_type);
+        setTime(data.mt_time);
+        setRound(data.mt_round);
+        setImagemassage(data.mt_image_name);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
 
-  const onInputChange1 = (e) => {
-    const file = e.target.files[0];
-    setImage1(file);
+    fetchMassage();
+  }, [id]);
 
-    // Preview image
+  const onInputChange1 = async (e) => {
+    const file = e.target.files[0]; // Declare once
     if (file) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const upload_response = await axios.post(
+          `${api}/image/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(upload_response.data);
+
+        setUploadedImage(upload_response.data.data);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+
+      // Preview image
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewImage1(reader.result);
@@ -53,30 +92,18 @@ function EditSingleMassge() {
     e.preventDefault();
 
     const updateData = {
-        namemassage,
-        detailmassage,
-        typemassage,
-        time,
-        round,
+      mt_name: namemassage,
+      mt_detail: detailmassage,
+      mt_type: typemassage,
+      mt_time: time,
+      mt_round: round,
+      mt_image_name: uploadedImage,
     };
 
-    const formData = new FormData();
-
-    // Append image1 only if it exists
-    if (image1) {
-      formData.append("imagemassage", image1);
-    }
-
-
-    // Append other updateData fields
-    for (let key in updateData) {
-      formData.append(key, updateData[key]);
-    }
+    console.log(updateData);
 
     axios
-      .put("http://localhost:3002/update-event/" + id, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      })
+      .put(`${api}/admin/edit-single-massage/${id}`, updateData)
       .then((res) => {
         window.location.reload();
       })
@@ -118,7 +145,7 @@ function EditSingleMassge() {
                     />
                   ) : (
                     <img
-                      src={"/images/" + imagemassage}
+                      src={imagemassage}
                       alt="Event"
                       className="object-cover h-full w-full rounded-md"
                     />
@@ -157,7 +184,7 @@ function EditSingleMassge() {
                 ></textarea>
                 <p className="mt-[15px] mb-[10px] text-black">Type</p>
                 <select
-                    value={typemassage}
+                  value={typemassage}
                   onChange={(e) => setTypemassage(e.target.value)}
                   name="eventtype"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
@@ -170,7 +197,7 @@ function EditSingleMassge() {
                 </select>
                 <p className="mt-[15px] mb-[10px] text-black">Time</p>
                 <select
-                value={time}
+                  value={time}
                   onChange={(e) => setTime(e.target.value)}
                   name="eventtype"
                   className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
@@ -198,99 +225,6 @@ function EditSingleMassge() {
                   Save
                 </button>
               </div>
-            </div>
-            <div className="block md:hidden w-full h-full text-white text-[14px] font-medium">
-              <p className="mb-[10px] text-black">Image</p>
-              <div className="w-full  rounded-md aspect-square bg-[#DBDBDB] my-[10px] relative">
-                {previewImage1 ? (
-                    <img
-                      src={previewImage1}
-                      alt="Preview 1"
-                      className="object-cover h-full w-full rounded-md"
-                    />
-                  ) : (
-                    <img
-                      src={"/images/" + imagemassage}
-                      alt="Event"
-                      className="object-cover h-full w-full rounded-md"
-                    />
-                  )}
-              </div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={onInputChange1}
-                className="px-3 py-2 my-[10px] h-[40px] w-full rounded-md bg-[#DBDBDB] flex text-black 
-                file:border-0 file:bg-[#DBDBDB] file:text-[14px] file:font-medium file:text-black"
-              ></input>
-
-              <p className="mt-[15px] mb-[10px] text-black">Name Massage</p>
-              <input
-                type="text"
-                value={namemassage}
-                onChange={(e) => setNamemassage(e.target.value)}
-                name="namemassage"
-                placeholder="Name Massage"
-                className="h-[40px] w-full rounded-md pl-2 focus:outline-none bg-[#DBDBDB] text-black
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              />
-              <p className="mt-[15px] mb-[10px] text-black">Detail Event</p>
-              <textarea
-                className="w-full pl-2 pt-2 rounded-md bg-[#DBDBDB] text-black focus:outline-none
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-                type="text"
-                value={detailmassage}
-                onChange={(e) => setDetailmassage(e.target.value)}
-                name="eventdetail"
-                id=""
-                rows="8"
-                placeholder="Tell about event"
-              ></textarea>
-              <p className="mt-[15px] mb-[10px] text-black">Type</p>
-              <select
-                value={typemassage}
-                onChange={(e) => setTypemassage(e.target.value)}
-                name="typemasage"
-                className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              >
-                <option>Select Type</option>
-                <option value="pubbar">Back</option>
-                <option value="festival">Shoulder</option>
-                <option value="concert">Neck</option>
-              </select>
-              <p className="mt-[15px] mb-[10px] text-black">Time</p>
-              <select
-                value={time}
-                onChange={(e) => setTime(e.target.value)}
-                name="time"
-                className="h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              >
-                <option>Select Time</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-              </select>
-
-              <p className="mt-[15px] mb-[10px] text-black">Round</p>
-              <input
-                type="number"
-                value={round}
-                onChange={(e) => setRound(e.target.value)}
-                name="round"
-                placeholder="Type Number"
-                className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              />
-
-              <button
-                type="submit"
-                className="text-[18px] h-[40px] w-full rounded-lg mt-[40px] bg-[#C0A172] text-center font-medium text-white hover:bg-[#C0A172]"
-              >
-                Save
-              </button>
             </div>
           </form>
         </div>

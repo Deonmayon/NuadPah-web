@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IconCom from "../components/IconCom";
 import Nav from "../components/Nav";
-import Navmenu from "../components/Navmenu";
+// import Navmenu from "../components/Navmenu";
 import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -10,8 +10,9 @@ function SingleManage() {
   const navigate = useNavigate();
 
   const [massagedata, setMassagedata] = useState([]);
+  const [fetchTrigger, setFetchTrigger] = useState(0);
 
-  const api = `${import.meta.env.VITE_API_URL}/massage`;
+  const api = `${import.meta.env.VITE_API_URL}`;
 
   const [currentPage, setCurrentPage] = useState(1);
   const eventPerPage = 10;
@@ -22,13 +23,10 @@ function SingleManage() {
     ? massagedata.slice(indexOfFirstEvent, indexOfLastEvent)
     : [];
 
-  const [showPopup, setShowPopup] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-
   useEffect(() => {
     const fetchMassage = async () => {
       try {
-        const res = await axios.get(`${api}/single-list`);
+        const res = await axios.get(`${api}/massage/single-list`);
         console.log(res.data.data);
         setMassagedata(res.data.data);
       } catch (error) {
@@ -37,15 +35,15 @@ function SingleManage() {
     };
 
     fetchMassage();
-  }, []);
+  }, [fetchTrigger]);
 
-  const togglePopup = (event) => {
-    setShowPopup(!showPopup);
-    setSelectedEvent(event);
+  // const togglePopup = (event) => {
+  //   setShowPopup(!showPopup);
+  //   setSelectedEvent(event);
 
-    // Toggle body scrolling
-    document.body.style.overflow = showPopup ? "auto" : "hidden";
-  };
+  //   // Toggle body scrolling
+  //   document.body.style.overflow = showPopup ? "auto" : "hidden";
+  // };
 
   const nextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
@@ -59,13 +57,17 @@ function SingleManage() {
     togglePopup();
   };
 
-  const handleDelete = (id) => {
-    togglePopup();
-    const confirmed = window.confirm("Are you sure to delete this event?");
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Are you sure to delete this massage?");
     if (confirmed) {
-      setMassagedata((prevData) =>
-        prevData.filter((event) => event._id !== id)
-      );
+      try {
+        await axios.delete(`${api}/admin/delete-single-massage/${id}`);
+        setFetchTrigger((prev) => prev + 1);
+        // Handle successful deletion
+      } catch (error) {
+        console.error("Error deleting massage:", error);
+        // Handle error
+      }
     }
   };
 
@@ -169,20 +171,16 @@ function SingleManage() {
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex justify-end">
-                        {/* <Link
-                          to={`/editsinglemassage`}
-                          className="min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
-                        >
-                          <IconCom icon="edit" />
-                        </Link> */}
                         <button
-                          onClick={() => navigate(`/editsinglemassage`)}
+                          onClick={() =>
+                            navigate(`/editsinglemassage/${event.mt_id}`)
+                          }
                           className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7d6137] cursor-pointer"
                         >
                           <IconCom icon="edit" />
                         </button>
                         <button
-                          onClick={() => handleDelete(event._id)}
+                          onClick={() => handleDelete(event.mt_id)}
                           className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C] cursor-pointer"
                         >
                           <IconCom icon="trash" />
@@ -250,48 +248,6 @@ function SingleManage() {
           </div>
         </div>
       </div>
-      {showPopup && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed top-0 left-0 w-full h-full bg-opacity-50 backdrop-filter backdrop-blur z-10"
-            onClick={togglePopup}
-          ></div>
-          {/* Popup Content */}
-          <div className="fixed z-20 bottom-0 inset-x-0 flex items-center justify-center mb-5">
-            <div className="px-5 py-3 w-full h-full max-w-[420px] max-h-[170px] bg-[#C0A172] rounded-md shadow-lg text-white">
-              <div className="flex justify-between py-2">
-                <p className="font-medium text-[20px]">Select</p>
-                <button
-                  onClick={togglePopup}
-                  className="flex items-center justify-center w-[30px] h-[30px] rounded-full bg-white text-[#C0A172] hover:bg-[#FF5757]"
-                >
-                  <IconCom icon="x" />
-                </button>
-              </div>
-              <Link
-                to={
-                  selectedEvent
-                    ? `/editsinglemassage/${selectedEvent._id}`
-                    : "#"
-                }
-                onClick={handleEdit}
-                className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
-              >
-                <IconCom icon="edit" />
-                <p className="ml-[10px] text-[16px] font-medium">Edit</p>
-              </Link>
-              <button
-                onClick={() => selectedEvent && handleDelete(selectedEvent._id)}
-                className="transition-all duration-300 flex w-full items-center px-4 py-3 text-sm text-left bg-[#FF5757] rounded-md hover:bg-[#FF5757]"
-              >
-                <IconCom icon="trash" />
-                <p className="ml-[10px] text-[16px] font-medium">Delete</p>
-              </button>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 }

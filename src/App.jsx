@@ -24,7 +24,10 @@ function App() {
         <Route path="/createsingle" element={<CreateSingle />}></Route>
         <Route path="/edituser" element={<EditUser />}></Route>
         <Route path="/editreport" element={<EditReport />}></Route>
-        <Route path="/editsinglemassage" element={<EditSingleMassge />}></Route>
+        <Route
+          path="/editsinglemassage/:id"
+          element={<EditSingleMassge />}
+        ></Route>
         <Route path="/createset" element={<CreateSet />}></Route>
         <Route path="/editset" element={<EditSet />}></Route>
         <Route path="/" element={<Login />}></Route>
