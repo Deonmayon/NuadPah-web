@@ -63,6 +63,7 @@ function SingleManage() {
       try {
         await axios.delete(`${api}/admin/delete-single-massage/${id}`);
         setFetchTrigger((prev) => prev + 1);
+        console.log("Massage deleted successfully");
         // Handle successful deletion
       } catch (error) {
         console.error("Error deleting massage:", error);
