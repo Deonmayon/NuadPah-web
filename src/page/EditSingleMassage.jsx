@@ -97,7 +97,7 @@ function EditSingleMassge() {
       mt_type: typemassage,
       mt_time: time,
       mt_round: round,
-      mt_image_name: uploadedImage,
+      mt_image_name: uploadedImage ? uploadedImage : imagemassage,
     };
 
     console.log(updateData);
@@ -108,6 +108,8 @@ function EditSingleMassge() {
         window.location.reload();
       })
       .catch((err) => console.log(err));
+
+    navigate("/singlemanage");
   };
 
   return (
