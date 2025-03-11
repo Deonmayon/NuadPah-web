@@ -25,8 +25,8 @@ function SingleManage() {
     const fetchMassage = async () => {
       try {
         const res = await axios.get(`${api}/massage/single-list`);
-        console.log("Massage Data", res.data.data);
-        setMassagedata(res.data.data);
+        console.log("Massage Data", res.data);
+        setMassagedata(res.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

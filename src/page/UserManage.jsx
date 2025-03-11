@@ -28,8 +28,8 @@ function UserManage() {
     const fetchUser = async () => {
       try {
         const res = await axios.get(`${api}/admin/get-users`);
-        console.log("User Data", res.data.data);
-        setUserData(res.data.data);
+        console.log("User Data", res.data);
+        setUserData(res.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

@@ -32,14 +32,13 @@ function EditUser() {
         const res = await axios.post(`${api}/admin/get-user`, {
           id: id,
         });
-        const data = res.data.data;
+        const data = res.data;
         console.log(data);
 
-        setFirstname(data[0].firstname);
-        setLastname(data[0].lastname);
-        setEmail(data[0].email);
-        setImage(data.image);
-        console.log(data[0].email);
+        setFirstname(data.firstname);
+        setLastname(data.lastname);
+        setEmail(data.email);
+        setImage(data.image_name);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -68,7 +67,7 @@ function EditUser() {
         );
         console.log(upload_response.data);
 
-        setUploadedImage(upload_response.data.data);
+        setUploadedImage(upload_response.data);
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -135,12 +134,19 @@ function EditUser() {
               Image
             </p>
             <div className="w-full rounded-md aspect-square bg-[#DBDBDB] my-[10px] relative">
-              {!previewImage && (
+              {!image && (
                 <div className="w-full h-full flex items-center justify-center absolute z-10">
                   <p className="text-[30px] font-medium text-black">
                     500 x 500
                   </p>
                 </div>
+              )}
+              {image && (
+                <img
+                  src={image}
+                  alt="Preview 1"
+                  className="object-cover h-full w-full rounded-md absolute z-20"
+                />
               )}
               {previewImage && (
                 <img

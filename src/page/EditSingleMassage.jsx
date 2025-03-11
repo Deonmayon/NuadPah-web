@@ -33,7 +33,7 @@ function EditSingleMassge() {
         const res = await axios.post(`${api}/massage/single-detail`, {
           mt_id: id,
         });
-        const data = res.data.data;
+        const data = res.data;
         console.log(data);
 
         setNamemassage(data.mt_name);
@@ -70,7 +70,7 @@ function EditSingleMassge() {
         );
         console.log(upload_response.data);
 
-        setUploadedImage(upload_response.data.data);
+        setUploadedImage(upload_response.data);
       } catch (error) {
         console.error("Error uploading image:", error);
       }
