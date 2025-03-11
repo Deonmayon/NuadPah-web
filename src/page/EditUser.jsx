@@ -2,53 +2,85 @@ import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import axios from "axios";
 
-function EditUser() {
+function UserProfile() {
   const { id } = useParams();
 
-  const [image1, setImage1] = useState(null);
-  const [previewImage1, setPreviewImage1] = useState(null);
+  return <h1>User ID: {id}</h1>;
+}
 
-  const [initialUsername, setInitialUsername] = useState("");
-  const [username, setUsername] = useState("");
+function EditUser() {
+  const [image, setImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [uploadedImage, setUploadedImage] = useState(null);
+
+  const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
-  // Mockup user data
-  useEffect(() => {
-    // Simulate fetching user data
-    const mockUserData = {
-      id: 1,
-      username: "John",
-      lastname: "Doe",
-      email: "johndoe@example.com",
-      image:
-        "https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=250",
-    };
+  const api = import.meta.env.VITE_API_URL;
 
-    setInitialUsername(mockUserData.username);
-    setUsername(mockUserData.username);
-    setLastname(mockUserData.lastname);
-    setEmail(mockUserData.email);
-    setPreviewImage1(mockUserData.image); // Set the initial image preview
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const res = await axios.post(`${api}/admin/get-user`, {
+          id: id,
+        });
+        const data = res.data.data;
+        console.log(data);
+
+        setFirstname(data[0].firstname);
+        setLastname(data[0].lastname);
+        setEmail(data[0].email);
+        setImage(data.image);
+        console.log(data[0].email);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchUser();
   }, [id]);
 
-  const onInputChange1 = (e) => {
-    const file = e.target.files[0];
-    setImage1(file);
-
-    // Preview image
+  const onInputChange1 = async (e) => {
+    const file = e.target.files[0]; // Declare once
     if (file) {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        const upload_response = await axios.post(
+          `${api}/image/upload`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(upload_response.data);
+
+        setUploadedImage(upload_response.data.data);
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+
+      // Preview image
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage1(reader.result);
+        setPreviewImage(reader.result);
       };
       reader.readAsDataURL(file);
     } else {
-      setPreviewImage1(null);
+      setPreviewImage(null);
     }
   };
 
@@ -56,18 +88,23 @@ function EditUser() {
     e.preventDefault();
 
     const updateData = {
-      username,
-      lastname,
-      email,
-      image,
+      firstname: firstname,
+      lastname: lastname,
+      email: email,
+      password: password,
+      image_name: uploadedImage ? uploadedImage : imagemassage,
     };
 
-    if (password.trim() !== "") {
-      updateData.password = password; // Include password only if it's not empty
-    }
+    console.log(updateData);
 
-    // Simulate updating user data
-    console.log("Updated user data:", updateData);
+    axios
+      .put(`${api}/admin/edit-user/${id}`, updateData)
+      .then((res) => {
+        window.location.reload();
+      })
+      .catch((err) => console.log(err));
+
+    navigate("/usermanage");
   };
 
   return (
@@ -88,7 +125,7 @@ function EditUser() {
             </Link>
             <div className="ml-[15px] flex flex-col justify-evenly h-full">
               <p className="text-[#C0A172] font-medium text-[16px]">
-                1-{initialUsername}
+                1-{firstname}
               </p>
               <p className="text-black font-medium text-[20px]">Edit User</p>
             </div>
@@ -98,16 +135,16 @@ function EditUser() {
               Image
             </p>
             <div className="w-full rounded-md aspect-square bg-[#DBDBDB] my-[10px] relative">
-              {!previewImage1 && (
+              {!previewImage && (
                 <div className="w-full h-full flex items-center justify-center absolute z-10">
                   <p className="text-[30px] font-medium text-black">
                     500 x 500
                   </p>
                 </div>
               )}
-              {previewImage1 && (
+              {previewImage && (
                 <img
-                  src={previewImage1}
+                  src={previewImage}
                   alt="Preview 1"
                   className="object-cover h-full w-full rounded-md absolute z-20"
                 />
@@ -123,13 +160,13 @@ function EditUser() {
             <div className="mt-[15px] mb-[10px] flex">
               <div className="w-1/2 pr-[5px]">
                 <p className="mb-[10px] text-black font-medium text-[14px]">
-                  Username
+                  Firstname
                 </p>
                 <input
                   type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  name="First Name"
+                  value={firstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  name="firstname"
                   placeholder="First Name"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                       focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"

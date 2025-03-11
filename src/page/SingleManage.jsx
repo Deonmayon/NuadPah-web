@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IconCom from "../components/IconCom";
 import Nav from "../components/Nav";
-// import Navmenu from "../components/Navmenu";
 import axios from "axios";
-
 import { Link, useNavigate } from "react-router-dom";
 
 function SingleManage() {
@@ -27,7 +25,7 @@ function SingleManage() {
     const fetchMassage = async () => {
       try {
         const res = await axios.get(`${api}/massage/single-list`);
-        console.log(res.data.data);
+        console.log("Massage Data", res.data.data);
         setMassagedata(res.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -37,24 +35,12 @@ function SingleManage() {
     fetchMassage();
   }, [fetchTrigger]);
 
-  // const togglePopup = (event) => {
-  //   setShowPopup(!showPopup);
-  //   setSelectedEvent(event);
-
-  //   // Toggle body scrolling
-  //   document.body.style.overflow = showPopup ? "auto" : "hidden";
-  // };
-
   const nextPage = () => {
     setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
   };
 
   const prevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
-  };
-
-  const handleEdit = () => {
-    togglePopup();
   };
 
   const handleDelete = async (id) => {
@@ -64,10 +50,8 @@ function SingleManage() {
         await axios.delete(`${api}/admin/delete-single-massage/${id}`);
         setFetchTrigger((prev) => prev + 1);
         console.log("Massage deleted successfully");
-        // Handle successful deletion
       } catch (error) {
         console.error("Error deleting massage:", error);
-        // Handle error
       }
     }
   };
@@ -185,40 +169,6 @@ function SingleManage() {
                           className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] text-white w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C] cursor-pointer"
                         >
                           <IconCom icon="trash" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr
-                    key={index}
-                    className="text-black table-row md:hidden border-y border-solid border-[#C0A172] hover:bg-[#DBDBDB]"
-                  >
-                    <td className="h-[70px] table-cell text-left align-middle px-4">
-                      <div className="flex">
-                        <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center mr-[8px]">
-                          <img
-                            key={index}
-                            src={"./images/" + event.image}
-                            alt="Event"
-                            className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
-                          />
-                        </div>
-                        <div className="flex flex-col max-w-[120px] ">
-                          <p className="text-black truncate overflow-hidden whitespace-nowrap">
-                            {event.namemassage}
-                          </p>
-                          <p className="font-extralight">{event.time}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
-                      <div className="flex items-center text-black justify-end">
-                        {event.typemassage}
-                        <button
-                          onClick={() => togglePopup(event)}
-                          className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] text-white rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
-                        >
-                          <IconCom icon="point" />
                         </button>
                       </div>
                     </td>

@@ -1,75 +1,42 @@
 import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
-
+import axios from "axios";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 function UserManage() {
-  const mockData = [
-    {
-      _id: "1",
-      username: "John Doe",
-      email: "john@example.com",
-      role: "admin",
-      formattedCreatedAt: "2025-01-01",
-      eventimage: "event1.jpg",
-    },
-    {
-      _id: "2",
-      username: "Jane Smith",
-      email: "jane@example.com",
-      role: "user",
-      formattedCreatedAt: "2025-02-01",
-      eventimage: "event1.jpg",
-    },
-    {
-      _id: "3",
-      username: "Alice Johnson",
-      email: "alice@example.com",
-      role: "user",
-      formattedCreatedAt: "2025-03-01",
-      eventimage: "event1.jpg",
-    },
-    {
-      _id: "4",
-      username: "Bob Brown",
-      email: "bob@example.com",
-      role: "admin",
-      formattedCreatedAt: "2025-04-01",
-      eventimage: "event1.jpg",
-    },
-    {
-      _id: "5",
-      username: "Emma Davis",
-      email: "emma@example.com",
-      role: "user",
-      formattedCreatedAt: "2025-05-01",
-      eventimage: "event1.jpg",
-    },
-    // เพิ่มข้อมูลเพิ่มเติมหากจำเป็น
-  ];
+  const [userData, setUserData] = useState([]);
+  const [fetchTrigger, setFetchTrigger] = useState(0);
   const navigate = useNavigate();
 
-  const [data, setData] = useState([]);
+  const api = import.meta.env.VITE_API_URL;
 
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 10;
-  const totalPages = Math.ceil(data.length / usersPerPage);
+  const totalPages = Math.ceil(userData.length / usersPerPage);
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = Array.isArray(data)
-    ? data.slice(indexOfFirstUser, indexOfLastUser)
+  const currentUsers = Array.isArray(userData)
+    ? userData.slice(indexOfFirstUser, indexOfLastUser)
     : [];
 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
-    // Simulate fetching data
-    setTimeout(() => {
-      setData(mockData);
-    }, 500);
-  }, []);
+    // Fetch data from the backend
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${api}/admin/get-users`);
+        console.log("User Data", res.data.data);
+        setUserData(res.data.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchUser();
+  }, [fetchTrigger]);
 
   const togglePopup = (user) => {
     setShowPopup(!showPopup);
@@ -91,15 +58,18 @@ function UserManage() {
     togglePopup();
   };
 
-  const ConfirmDelete = () => {
-    confirm("Are you sure to delete this user");
-  };
-
-  const handleDelete = (id) => {
-    togglePopup();
-    const confirmed = window.confirm("Are you sure to delete this event?");
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Are you sure to delete this massage?");
     if (confirmed) {
-      setData((prevData) => prevData.filter((event) => event._id !== id));
+      try {
+        await axios.delete(`${api}/admin/delete-user/${id}`);
+        setFetchTrigger((prev) => prev + 1);
+        console.log("User deleted successfully");
+        // Handle successful deletion
+      } catch (error) {
+        console.error("Error deleting massage:", error);
+        // Handle error
+      }
     }
   };
 
@@ -132,7 +102,7 @@ function UserManage() {
               </button>
             </div>
           </div>
-          {data.length > 0 && (
+          {userData.length > 0 && (
             <table className="table text-[#C0A172] text-[16px] min-h-[70px] max-h-[70px] h-full w-full items-center bg-white md:rounded-t-md">
               <thead className="table-header-group">
                 <tr className="md:table-row hidden">
@@ -143,7 +113,7 @@ function UserManage() {
                     Email
                   </th>
                   <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
-                    Created At
+                    Role
                   </th>
                   <th className="h-[70px] table-cell text-left align-middle px-4"></th>
                 </tr>
@@ -157,7 +127,7 @@ function UserManage() {
                           <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-full flex justify-center items-center mr-[8px]">
                             <img
                               key={index}
-                              src={"./images/" + user.eventimage}
+                              src={user.image_name}
                               alt="Event"
                               className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-full"
                             />
@@ -173,53 +143,21 @@ function UserManage() {
                       </td>
 
                       <td className="h-[70px] table-cell text-left align-middle px-4">
-                        {user.formattedCreatedAt}
+                        {user.role}
                       </td>
                       <td className="h-[70px] table-cell text-left align-middle px-4">
                         <div className="flex justify-end">
                           <Link
-                            to={`/edituser`}
-                            className="transition-all text-white duration-300 hover:bg-[#C0A172] min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center"
+                            to={`/edituser/${user.id}`}
+                            className="transition-all text-white duration-300 hover:bg-[#7d6137] min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center"
                           >
                             <IconCom icon="edit" />
                           </Link>
                           <button
-                            onClick={() => handleDelete(user._id)}
+                            onClick={() => handleDelete(user.id)}
                             className="transition-all text-white duration-300 bg-[#FF5757] ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full hover:bg-[#942423] rounded-lg flex justify-center items-center"
                           >
                             <IconCom icon="trash" />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr
-                      key={index}
-                      className="table-row md:hidden border-y border-solid border-[#C0A172] hover:bg-[#DBDBDB] transition-all duration-300"
-                    >
-                      <td className="h-[70px] table-cell text-left align-middle px-4">
-                        <div className="flex items-center">
-                          <div className="min-h-[45px] min-w-[45px] max-h-[45px] max-w-[45px] w-full h-full bg-[#C0A172] rounded-full flex justify-center items-center mr-[8px]">
-                            <img
-                              src={"./images/" + user.eventimage}
-                              alt="Event"
-                              className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-full"
-                            />
-                          </div>
-                          <div className="flex flex-col">
-                            <p className="text-black">{user.username}</p>
-                            <p className="font-extralight text-black">
-                              {user.email}
-                            </p>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
-                        <div className="flex items-center text-white justify-end">
-                          <button
-                            onClick={() => togglePopup(user)}
-                            className="ml-4 min-h-[40px] min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
-                          >
-                            <IconCom icon="point" />
                           </button>
                         </div>
                       </td>
@@ -251,44 +189,6 @@ function UserManage() {
           </div>
         </div>
       </div>
-      {showPopup && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed top-0 left-0 w-full h-full bg-opacity-50 backdrop-filter backdrop-blur z-10"
-            onClick={togglePopup}
-          ></div>
-          {/* Popup Content */}
-          <div className="fixed z-20 bottom-0 inset-x-0 flex items-center justify-center mb-5">
-            <div className="px-5 py-3 w-full h-full max-w-[420px] max-h-[170px] bg-[#C0A172] rounded-md shadow-lg text-white">
-              <div className="flex justify-between py-2">
-                <p className="font-medium text-[20px]">Select</p>
-                <button
-                  onClick={togglePopup}
-                  className="flex items-center justify-center w-[30px] h-[30px] rounded-full bg-white text-[#C0A172] hover:bg-[#FF5757]"
-                >
-                  <IconCom icon="x" />
-                </button>
-              </div>
-              <Link
-                to={selectedUser ? `/editevent/${selectedUser._id}` : "#"}
-                onClick={handleEdit}
-                className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
-              >
-                <IconCom icon="edit" />
-                <p className="ml-[10px] text-[16px] font-medium">Edit</p>
-              </Link>
-              <button
-                onClick={() => selectedUser && handleDelete(selectedUser._id)}
-                className="transition-all duration-300 flex w-full items-center px-4 py-3 text-sm text-left bg-[#FF5757] rounded-md hover:bg-[#FF5757]"
-              >
-                <IconCom icon="trash" />
-                <p className="ml-[10px] text-[16px] font-medium">Delete</p>
-              </button>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   );
 }

@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import SingleManage from "./page/SingleManage";
 import UserManage from "./page/UserManage";
 import ReportManage from "./page/ReportManage";
@@ -22,7 +21,7 @@ function App() {
         <Route path="/reportmanage" element={<ReportManage />}></Route>
         <Route path="/setofmanage" element={<SetofManage />}></Route>
         <Route path="/createsingle" element={<CreateSingle />}></Route>
-        <Route path="/edituser" element={<EditUser />}></Route>
+        <Route path="/edituser/:id" element={<EditUser />}></Route>
         <Route path="/editreport" element={<EditReport />}></Route>
         <Route
           path="/editsinglemassage/:id"

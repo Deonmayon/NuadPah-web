@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import axios from "axios";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 function UserProfile() {
   const { id } = useParams();
@@ -9,10 +10,7 @@ function UserProfile() {
   return <h1>User ID: {id}</h1>;
 }
 
-import { Link, useNavigate, useParams } from "react-router-dom";
-
 function EditSingleMassge() {
-  const [image1, setImage1] = useState(null);
   const [previewImage1, setPreviewImage1] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
 
