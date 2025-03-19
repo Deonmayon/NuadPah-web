@@ -48,7 +48,7 @@ function CreateSingle() {
         );
         console.log(upload_response.data);
 
-        setUploadedImage(upload_response.data.data);
+        setUploadedImage(upload_response.data);
         // console.log(url);
       } catch (error) {
         console.error("Error uploading image:", error);
@@ -82,6 +82,7 @@ function CreateSingle() {
         `${api}/admin/add-single-massage`,
         formData
       );
+      console.log("Image:", uploadedImage);
       console.log("Data submitted successfully:", response.data);
       navigate("/singlemanage");
     } catch (error) {
