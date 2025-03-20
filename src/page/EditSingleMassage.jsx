@@ -10,7 +10,7 @@ function UserProfile() {
   return <h1>User ID: {id}</h1>;
 }
 
-function EditSingleMassge() {
+function EditSingleMassage() {
   const [previewImage1, setPreviewImage1] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
 
@@ -233,4 +233,4 @@ function EditSingleMassge() {
   );
 }
 
-export default EditSingleMassge;
+export default EditSingleMassage;
