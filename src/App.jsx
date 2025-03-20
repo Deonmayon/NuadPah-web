@@ -28,7 +28,7 @@ function App() {
           element={<EditSingleMassge />}
         ></Route>
         <Route path="/createset" element={<CreateSet />}></Route>
-        <Route path="/editset" element={<EditSet />}></Route>
+        <Route path="/editset/:id" element={<EditSet />}></Route>
         <Route path="/" element={<Login />}></Route>
       </Routes>
     </BrowserRouter>

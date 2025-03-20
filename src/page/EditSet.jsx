@@ -2,8 +2,14 @@ import React, { useEffect, useState } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import { ChevronDown } from "lucide-react";
+import axios from "axios";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { Link, useNavigate } from "react-router-dom";
+function UserProfile() {
+  const { id } = useParams();
+
+  return <h1>User ID: {id}</h1>;
+}
 
 function EditSet() {
   const [image1, setImage1] = useState(null);
@@ -35,7 +41,7 @@ function EditSet() {
     },
   ];
 
-  const Realdata = [ 
+  const Realdata = [
     {
       id: 1,
       namesetmassage: "Set Thai Massage",
@@ -44,7 +50,7 @@ function EditSet() {
       massage2: "2",
       massage3: "3",
     },
-  ]
+  ];
 
   const [selected1, setSelected1] = useState(null);
   const [isOpen1, setIsOpen1] = useState(false);
@@ -56,9 +62,8 @@ function EditSet() {
   const [namesetmassage, setNamesetmassage] = useState("");
   const [detailmassage, setDetailmassage] = useState("");
   const [massage1, setMassage1] = useState("");
-  const [massage2, setMassage2] = useState(""); 
-  const [massage3, setMassage3] = useState(""); 
-  
+  const [massage2, setMassage2] = useState("");
+  const [massage3, setMassage3] = useState("");
 
   const navigate = useNavigate();
 
@@ -68,12 +73,18 @@ function EditSet() {
       const data = Realdata[0]; // ใช้ข้อมูลชุดแรก
       setNamesetmassage(data.namesetmassage);
       setDetailmassage(data.detailmassage);
-  
+
       // ค้นหาข้อมูลจาก mockData ให้ตรงกับ id
-      const selectedMassage1 = mockData.find((m) => m.id === Number(data.massage1));
-      const selectedMassage2 = mockData.find((m) => m.id === Number(data.massage2));
-      const selectedMassage3 = mockData.find((m) => m.id === Number(data.massage3));
-  
+      const selectedMassage1 = mockData.find(
+        (m) => m.id === Number(data.massage1)
+      );
+      const selectedMassage2 = mockData.find(
+        (m) => m.id === Number(data.massage2)
+      );
+      const selectedMassage3 = mockData.find(
+        (m) => m.id === Number(data.massage3)
+      );
+
       setSelected1(selectedMassage1 || null);
       setSelected2(selectedMassage2 || null);
       setSelected3(selectedMassage3 || null);
@@ -101,7 +112,7 @@ function EditSet() {
         <div className="mt-[30px] w-full flex flex-col items-center">
           <div className="h-[70px] w-full flex flex-row items-center">
             <Link
-              to="/singlemanage"
+              to="/setofmanage"
               className="flex px-3 py-2 rounded-lg items-center border-2 border-solid border-[#C0A172] text-[#C0A172] transition-all duration-300 hover:bg-[#DBDBDB]"
             >
               <IconCom icon="left" size="18" />
@@ -267,137 +278,137 @@ function EditSet() {
                   rows="8"
                   placeholder="Tell about massage"
                 ></textarea>
-                
+
                 <button className="h-[40px] w-full rounded-lg mt-[40px] bg-[#C0A172] text-[18px] text-center font-medium text-white transition-all duration-300 hover:bg-[#C0A172]">
                   Save
                 </button>
               </div>
             </div>
             <div className="block md:hidden w-full h-full text-black text-[14px] font-medium">
-            <p className="mb-[10px]">Select Single Massage</p>
-                <div className="w-full">
-                  <div
-                    className="border-2 border-dashed border-[#DBDBDB] rounded-lg px-4 py-5 flex justify-between items-center cursor-pointer"
-                    onClick={() => setIsOpen1(!isOpen1)}
-                  >
-                    {selected1 ? (
-                      <div className="flex items-center gap-2">
+              <p className="mb-[10px]">Select Single Massage</p>
+              <div className="w-full">
+                <div
+                  className="border-2 border-dashed border-[#DBDBDB] rounded-lg px-4 py-5 flex justify-between items-center cursor-pointer"
+                  onClick={() => setIsOpen1(!isOpen1)}
+                >
+                  {selected1 ? (
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={selected1.image}
+                        alt={selected1.name}
+                        className="w-8 h-8 rounded"
+                      />
+                      <span>{selected1.name}</span>
+                    </div>
+                  ) : (
+                    <span className="text-black">Select single massage</span>
+                  )}
+                  <ChevronDown className="w-5 h-5 text-black" />
+                </div>
+                {isOpen1 && (
+                  <div className="border border-gray-300 mt-2 rounded-lg shadow-lg bg-white">
+                    {mockData.map((massage) => (
+                      <div
+                        key={massage.id}
+                        className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
+                        onClick={() => {
+                          setSelected1(massage);
+                          setIsOpen1(false);
+                        }}
+                      >
                         <img
-                          src={selected1.image}
-                          alt={selected1.name}
+                          src={massage.image}
+                          alt={massage.name}
                           className="w-8 h-8 rounded"
                         />
-                        <span>{selected1.name}</span>
+                        <span>{massage.name}</span>
                       </div>
-                    ) : (
-                      <span className="text-black">Select single massage</span>
-                    )}
-                    <ChevronDown className="w-5 h-5 text-black" />
+                    ))}
                   </div>
-                  {isOpen1 && (
-                    <div className="border border-gray-300 mt-2 rounded-lg shadow-lg bg-white">
-                      {mockData.map((massage) => (
-                        <div
-                          key={massage.id}
-                          className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
-                          onClick={() => {
-                            setSelected1(massage);
-                            setIsOpen1(false);
-                          }}
-                        >
-                          <img
-                            src={massage.image}
-                            alt={massage.name}
-                            className="w-8 h-8 rounded"
-                          />
-                          <span>{massage.name}</span>
-                        </div>
-                      ))}
+                )}
+              </div>
+              <div className="my-3 w-full">
+                <div
+                  className="border-2 border-dashed border-[#DBDBDB] rounded-lg px-4 py-5 flex justify-between items-center cursor-pointer"
+                  onClick={() => setIsOpen2(!isOpen2)}
+                >
+                  {selected2 ? (
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={selected2.image}
+                        alt={selected2.name}
+                        className="w-8 h-8 rounded"
+                      />
+                      <span>{selected2.name}</span>
                     </div>
+                  ) : (
+                    <span className="text-black">Select single massage</span>
                   )}
+                  <ChevronDown className="w-5 h-5 text-black" />
                 </div>
-                <div className="my-3 w-full">
-                  <div
-                    className="border-2 border-dashed border-[#DBDBDB] rounded-lg px-4 py-5 flex justify-between items-center cursor-pointer"
-                    onClick={() => setIsOpen2(!isOpen2)}
-                  >
-                    {selected2 ? (
-                      <div className="flex items-center gap-2">
+                {isOpen2 && (
+                  <div className="border border-gray-300 mt-2 rounded-lg shadow-lg bg-white">
+                    {mockData.map((massage) => (
+                      <div
+                        key={massage.id}
+                        className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
+                        onClick={() => {
+                          setSelected2(massage);
+                          setIsOpen2(false);
+                        }}
+                      >
                         <img
-                          src={selected2.image}
-                          alt={selected2.name}
+                          src={massage.image}
+                          alt={massage.name}
                           className="w-8 h-8 rounded"
                         />
-                        <span>{selected2.name}</span>
+                        <span>{massage.name}</span>
                       </div>
-                    ) : (
-                      <span className="text-black">Select single massage</span>
-                    )}
-                    <ChevronDown className="w-5 h-5 text-black" />
+                    ))}
                   </div>
-                  {isOpen2 && (
-                    <div className="border border-gray-300 mt-2 rounded-lg shadow-lg bg-white">
-                      {mockData.map((massage) => (
-                        <div
-                          key={massage.id}
-                          className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
-                          onClick={() => {
-                            setSelected2(massage);
-                            setIsOpen2(false);
-                          }}
-                        >
-                          <img
-                            src={massage.image}
-                            alt={massage.name}
-                            className="w-8 h-8 rounded"
-                          />
-                          <span>{massage.name}</span>
-                        </div>
-                      ))}
+                )}
+              </div>
+              <div className="my-3 w-full">
+                <div
+                  className="border-2 border-dashed border-[#DBDBDB] rounded-lg px-4 py-5 flex justify-between items-center cursor-pointer"
+                  onClick={() => setIsOpen3(!isOpen3)}
+                >
+                  {selected3 ? (
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={selected3.image}
+                        alt={selected3.name}
+                        className="w-8 h-8 rounded"
+                      />
+                      <span>{selected3.name}</span>
                     </div>
+                  ) : (
+                    <span className="text-black">Select single massage</span>
                   )}
+                  <ChevronDown className="w-5 h-5 text-black" />
                 </div>
-                <div className="my-3 w-full">
-                  <div
-                    className="border-2 border-dashed border-[#DBDBDB] rounded-lg px-4 py-5 flex justify-between items-center cursor-pointer"
-                    onClick={() => setIsOpen3(!isOpen3)}
-                  >
-                    {selected3 ? (
-                      <div className="flex items-center gap-2">
+                {isOpen3 && (
+                  <div className="border border-gray-300 mt-2 rounded-lg shadow-lg bg-white">
+                    {mockData.map((massage) => (
+                      <div
+                        key={massage.id}
+                        className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
+                        onClick={() => {
+                          setSelected3(massage);
+                          setIsOpen3(false);
+                        }}
+                      >
                         <img
-                          src={selected3.image}
-                          alt={selected3.name}
+                          src={massage.image}
+                          alt={massage.name}
                           className="w-8 h-8 rounded"
                         />
-                        <span>{selected3.name}</span>
+                        <span>{massage.name}</span>
                       </div>
-                    ) : (
-                      <span className="text-black">Select single massage</span>
-                    )}
-                    <ChevronDown className="w-5 h-5 text-black" />
+                    ))}
                   </div>
-                  {isOpen3 && (
-                    <div className="border border-gray-300 mt-2 rounded-lg shadow-lg bg-white">
-                      {mockData.map((massage) => (
-                        <div
-                          key={massage.id}
-                          className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
-                          onClick={() => {
-                            setSelected3(massage);
-                            setIsOpen3(false);
-                          }}
-                        >
-                          <img
-                            src={massage.image}
-                            alt={massage.name}
-                            className="w-8 h-8 rounded"
-                          />
-                          <span>{massage.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                )}
+              </div>
               <p className="mt-[15px] mb-[10px] text-black">Name Massage</p>
               <input
                 type="text"
@@ -420,7 +431,6 @@ function EditSet() {
                 rows="8"
                 placeholder="Tell about massage"
               ></textarea>
-              
 
               <button
                 type="submit"

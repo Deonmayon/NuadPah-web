@@ -195,7 +195,7 @@ function SetofManage() {
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex justify-end">
                         <Link
-                          to={`/editevent/${event._id}`}
+                          to={`/editset/${event.ms_id}`}
                           className="min-h-[40px] text-white min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
                         >
                           <IconCom icon="edit" />
