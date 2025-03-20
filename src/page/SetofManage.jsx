@@ -1,47 +1,44 @@
 import React, { useEffect, useState } from "react";
 import IconCom from "../components/IconCom";
 import Nav from "../components/Nav";
+import axios from "axios";
 
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 function SetofManage() {
   const navigate = useNavigate();
 
-  const mockEvents = [
-    {
-      _id: "1",
-      nameset: "Name set of massage",
-      time: "5",
-      typemassage: "back , neck , shoulder",
-      image1: "event1.jpg",
-      image2: "event1.jpg",
-      image3: "event1.jpg",
-      formattedCreatedAt: "2025-02-01",
-    },
-    
-  ];
-
-  
   const [data, setData] = useState([]);
 
+  const api = `${import.meta.env.VITE_API_URL}`;
+
+  const [massagedata, setMassagedata] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [fetchTrigger, setFetchTrigger] = useState(0);
   const eventPerPage = 10;
-  const totalPages = Math.ceil(data.length / eventPerPage);
+  const totalPages = Math.ceil(massagedata.length / eventPerPage);
   const indexOfLastEvent = currentPage * eventPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventPerPage;
-  const currentEvents = Array.isArray(data)
-    ? data.slice(indexOfFirstEvent, indexOfLastEvent)
+  const currentEvents = Array.isArray(massagedata)
+    ? massagedata.slice(indexOfFirstEvent, indexOfLastEvent)
     : [];
 
   const [showPopup, setShowPopup] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
 
   useEffect(() => {
-    // Simulate fetching data
-    setTimeout(() => {
-      setData(mockEvents);
-    }, 500);
-  }, []);
+    const fetchMassage = async () => {
+      try {
+        const res = await axios.get(`${api}/massage/set-list`);
+        console.log("Set Massage Data", res.data);
+        setMassagedata(res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchMassage();
+  }, [fetchTrigger]);
 
   const togglePopup = (event) => {
     setShowPopup(!showPopup);
@@ -135,9 +132,9 @@ function SetofManage() {
                 <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
                   Type
                 </th>
-                <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
+                {/* <th className="h-[70px] table-cell text-left align-middle px-4 font-medium">
                   Created At
-                </th>
+                </th> */}
                 <th className="h-[70px] table-cell text-left align-middle px-4"></th>
               </tr>
             </thead>
@@ -148,43 +145,48 @@ function SetofManage() {
                     <td className="max-w-[90px] sm:max-w-[130px] md:max-w-[200px] h-[110px] table-cell text-left align-middle px-4">
                       <div className="flex items-center">
                         <div className="min-h-[90px] min-w-[90px] max-h-[90px] max-w-[90px] w-full h-full bg-[#C0A172] rounded-lg justify-start items-start mr-[8px]">
+                          {/* Top section (first two images) */}
                           <div className="min-h-[45px] min-w-[90px] max-h-[45px] max-w-[90px] w-full h-full bg-[#C0A172] rounded-t-lg flex justify-start items-start">
-                            <img
-                              key={index}
-                              src={"./images/" + event.image1}
-                              alt="Event"
-                              className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
-                            />
-                            <img
-                              key={index}
-                              src={"./images/" + event.image2}
-                              alt="Event"
-                              className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
-                            />
+                            {event.ms_image_names
+                              .slice(0, 2)
+                              .map((image, index) => (
+                                <img
+                                  key={index}
+                                  src={image}
+                                  alt="Event"
+                                  className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
+                                />
+                              ))}
                           </div>
+
+                          {/* Bottom section (third image) */}
                           <div className="min-h-[45px] min-w-[90px] max-h-[45px] max-w-[90px] w-full h-full bg-black rounded-b-lg flex justify-center items-center">
-                            <img
-                              key={index}
-                              src={"./images/" + event.image3}
-                              alt="Event"
-                              className="object-cover min-h-[45px] min-w-[90px] h-full w-full rounded-md"
-                            />
+                            {event.ms_image_names[2] && (
+                              <img
+                                key={2}
+                                src={event.ms_image_names[2]}
+                                alt="Event"
+                                className="object-cover min-h-[45px] min-w-[90px] h-full w-full rounded-md"
+                              />
+                            )}
                           </div>
                         </div>
+
                         <p className="truncate overflow-hidden whitespace-nowrap">
-                          {event.nameset}
+                          {event.ms_name}
                         </p>
                       </div>
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4">
-                      {`${event.time} minutes`}
+                      {`${event.ms_time} minutes`}
                     </td>
                     <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
-                      {event.typemassage}
+                      {event?.ms_types?.join(", ") || "N/A"}
                     </td>
-                    <td className="h-[70px] table-cell text-left align-middle px-4">
+
+                    {/* <td className="h-[70px] table-cell text-left align-middle px-4">
                       {event.formattedCreatedAt}
-                    </td>
+                    </td> */}
                     <td className="h-[70px] table-cell text-left align-middle px-4">
                       <div className="flex justify-end">
                         <Link
@@ -198,56 +200,6 @@ function SetofManage() {
                           className="ml-4 min-h-[40px] text-white min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C]"
                         >
                           <IconCom icon="trash" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr
-                    key={index}
-                    className="table-row md:hidden border-y border-solid border-[#C0A172] hover:bg-[#DBDBDB]"
-                  >
-                    <td className="h-[110px] table-cell text-left align-middle px-4">
-                      <div className="flex">
-                      <div className="min-h-[90px] min-w-[90px] max-h-[90px] max-w-[90px] w-full h-full bg-[#1DB954] rounded-lg justify-start items-start mr-[8px]">
-                          <div className="min-h-[45px] min-w-[90px] max-h-[45px] max-w-[90px] w-full h-full bg-[#C0A172] rounded-t-lg flex justify-start items-start">
-                            <img
-                              key={index}
-                              src={"./images/" + event.image1}
-                              alt="Event"
-                              className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
-                            />
-                            <img
-                              key={index}
-                              src={"./images/" + event.image2}
-                              alt="Event"
-                              className="object-cover min-h-[45px] min-w-[45px] h-full w-full rounded-md"
-                            />
-                          </div>
-                          <div className="min-h-[45px] min-w-[90px] max-h-[45px] max-w-[90px] w-full h-full bg-black rounded-b-lg flex justify-center items-center">
-                            <img
-                              key={index}
-                              src={"./images/" + event.image3}
-                              alt="Event"
-                              className="object-cover min-h-[45px] min-w-[90px] h-full w-full rounded-md"
-                            />
-                          </div>
-                        </div>
-                        <div className="flex flex-col max-w-[160px] justify-center">
-                          <p className="text-black truncate overflow-hidden whitespace-nowrap">
-                            {event.nameset}
-                          </p>
-                          <p className="font-extralight text-black">{`${event.time} minutes`}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="h-[70px] table-cell text-left align-middle px-4 text-[13px] font-medium">
-                      <div className="flex items-center text-black justify-end">
-                       {event.typemassage}
-                        <button
-                          onClick={() => togglePopup(event)}
-                          className="ml-4 min-h-[40px] min-w-[40px] text-white max-h-[40px] max-w-[40px] w-full h-full bg-[#C0A172] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#C0A172]"
-                        >
-                          <IconCom icon="point" />
                         </button>
                       </div>
                     </td>
@@ -298,7 +250,7 @@ function SetofManage() {
                 </button>
               </div>
               <Link
-                to={selectedEvent ? `/editevent/${selectedEvent._id}` : '#'}
+                to={selectedEvent ? `/editevent/${selectedEvent._id}` : "#"}
                 onClick={handleEdit}
                 className="transition-all duration-300 mb-2 w-full flex items-center px-4 py-3 text-sm text-left rounded-md hover:bg-[#DBDBDB]"
               >
