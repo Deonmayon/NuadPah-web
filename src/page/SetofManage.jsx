@@ -60,11 +60,16 @@ function SetofManage() {
     togglePopup();
   };
 
-  const handleDelete = (id) => {
-    togglePopup();
-    const confirmed = window.confirm("Are you sure to delete this event?");
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Are you sure to delete this massage?");
     if (confirmed) {
-      setData((prevData) => prevData.filter((event) => event._id !== id));
+      try {
+        await axios.delete(`${api}/admin/delete-set-massage/${id}`);
+        setFetchTrigger((prev) => prev + 1);
+        console.log("Massage Set deleted successfully");
+      } catch (error) {
+        console.error("Error deleting massage:", error);
+      }
     }
   };
 
@@ -196,7 +201,7 @@ function SetofManage() {
                           <IconCom icon="edit" />
                         </Link>
                         <button
-                          onClick={() => handleDelete(event._id)}
+                          onClick={() => handleDelete(event.ms_id)}
                           className="ml-4 min-h-[40px] text-white min-w-[40px] max-h-[40px] max-w-[40px] w-full h-full bg-[#FF5757] rounded-lg flex justify-center items-center transition-all duration-300 hover:bg-[#7D1D1C]"
                         >
                           <IconCom icon="trash" />
