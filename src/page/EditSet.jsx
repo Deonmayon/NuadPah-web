@@ -12,46 +12,6 @@ function UserProfile() {
 }
 
 function EditSet() {
-  const [image1, setImage1] = useState(null);
-  const [allImage, setAllImage] = useState(null);
-  const [previewImage1, setPreviewImage1] = useState(null);
-  const [values, setValue] = useState({
-    namemassage: "",
-    detailmassage: "",
-    typemassage: "",
-    time: "",
-    round: "",
-  });
-
-  const mockData = [
-    {
-      id: 1,
-      name: "Thai Massage",
-      image: "https://via.placeholder.com/50",
-    },
-    {
-      id: 2,
-      name: "Swedish Massage",
-      image: "https://via.placeholder.com/50",
-    },
-    {
-      id: 3,
-      name: "Deep Tissue Massage",
-      image: "https://via.placeholder.com/50",
-    },
-  ];
-
-  const Realdata = [
-    {
-      id: 1,
-      namesetmassage: "Set Thai Massage",
-      detailmassage: "dfsdgfsdgdsdsfsdsdfsgsg",
-      massage1: "2",
-      massage2: "2",
-      massage3: "3",
-    },
-  ];
-
   const [selected1, setSelected1] = useState(null);
   const [isOpen1, setIsOpen1] = useState(false);
   const [selected2, setSelected2] = useState(null);
@@ -59,50 +19,139 @@ function EditSet() {
   const [selected3, setSelected3] = useState(null);
   const [isOpen3, setIsOpen3] = useState(false);
 
-  const [namesetmassage, setNamesetmassage] = useState("");
-  const [detailmassage, setDetailmassage] = useState("");
-  const [massage1, setMassage1] = useState("");
-  const [massage2, setMassage2] = useState("");
-  const [massage3, setMassage3] = useState("");
+  const [massagedata, setMassagedata] = useState([]);
+  const [setdata, setSetdata] = useState({ ms_name: "", ms_detail: "" });
+  const [selecteddetail, setSelectedDetail] = useState([]);
+
+  const { id } = useParams();
 
   const navigate = useNavigate();
 
+  const api = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    // Mockup data
-    if (Realdata.length > 0) {
-      const data = Realdata[0]; // ใช้ข้อมูลชุดแรก
-      setNamesetmassage(data.namesetmassage);
-      setDetailmassage(data.detailmassage);
-
-      // ค้นหาข้อมูลจาก mockData ให้ตรงกับ id
-      const selectedMassage1 = mockData.find(
-        (m) => m.id === Number(data.massage1)
-      );
-      const selectedMassage2 = mockData.find(
-        (m) => m.id === Number(data.massage2)
-      );
-      const selectedMassage3 = mockData.find(
-        (m) => m.id === Number(data.massage3)
-      );
-
-      setSelected1(selectedMassage1 || null);
-      setSelected2(selectedMassage2 || null);
-      setSelected3(selectedMassage3 || null);
-    }
-  }, []);
-
-  const submitImage = (e) => {
-    e.preventDefault();
-
-    const formData = {
-      eventimage: image1,
-      ...values,
+    const fetchMassage = async () => {
+      try {
+        const res = await axios.get(`${api}/massage/single-list`);
+        console.log("Massage Data:", res.data);
+        setMassagedata(res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
-    // Mock response and navigation
-    console.log("Event Submitted:", formData);
-    alert("Event created successfully!");
-    navigate("/setofmanage");
+    const fetchSet = async () => {
+      try {
+        const res = await axios.post(`${api}/massage/set-detail`, {
+          ms_id: id,
+        });
+        const data = res.data;
+        console.log("Massage Set Data:", data);
+        setSetdata(data);
+        console.log("Selected Detail:", selecteddetail);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchMassage();
+    fetchSet();
+  }, [api, id]);
+
+  // Use another useEffect to set selected massages **after** data is loaded
+  useEffect(() => {
+    // Set selected massages only when setdata is available and doesn't already have a value
+    if (setdata.massageTechniqueDetails?.length) {
+      // Only set values if selected is null (do not reset them if they are already set)
+      if (!selected1) setSelected1(setdata.massageTechniqueDetails[0] || null);
+      if (!selected2) setSelected2(setdata.massageTechniqueDetails[1] || null);
+      if (!selected3) setSelected3(setdata.massageTechniqueDetails[2] || null);
+    }
+  }, [setdata, selected1, selected2, selected3]);
+
+  const getAvailableOptions = (selected) => {
+    return massagedata.filter(
+      (item) =>
+        item.mt_id !== selected1?.mt_id &&
+        item.mt_id !== selected2?.mt_id &&
+        item.mt_id !== selected3?.mt_id
+    );
+  };
+
+  async function fetchSingle(id) {
+    try {
+      const res = await axios.post(`${api}/massage/single-detail`, {
+        mt_id: id,
+      });
+      const data = res.data;
+
+      const onemassage = {
+        type: data.mt_type,
+        time: data.mt_time,
+        image: data.mt_image_name,
+      };
+
+      console.log("One Massage:", onemassage);
+
+      setSelectedDetail((prev) => {
+        // Check if onemassage already exists in prev
+        const exists = prev.some(
+          (item) =>
+            item.type === selecteddetail.type &&
+            item.time === selecteddetail.time &&
+            item.image === selecteddetail.image
+        );
+
+        // Only append if the item doesn't already exist
+        if (!exists) {
+          return [...prev, onemassage];
+        }
+
+        return prev; // Return the previous state unchanged if the item exists
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("Selected Detail:", selecteddetail);
+
+    // Ensure we are sending the correct selected values
+    const alltype = selecteddetail.map((massage) => massage.type);
+    const alltime = selecteddetail.reduce(
+      (total, massage) => total + massage.time,
+      0
+    );
+    const allimage = selecteddetail.map((massage) => massage.image);
+    const joinedKeys = {
+      type: alltype,
+      time: alltime,
+      image: allimage,
+    };
+
+    // Prepare data to send
+    const formData = {
+      ms_name: setdata.ms_name,
+      ms_detail: setdata.ms_detail,
+      mt_ids: [selected1.mt_id, selected2.mt_id, selected3.mt_id], // Send only IDs
+      ms_types: joinedKeys.type,
+      ms_time: joinedKeys.time,
+      ms_image_names: joinedKeys.image,
+    };
+
+    console.log("Submit Data:", formData);
+    try {
+      const response = await axios.put(
+        `${api}/admin/edit-set-massage/${id}`,
+        formData
+      );
+      console.log("Data submitted successfully:", response.data);
+      navigate("/setofmanage");
+    } catch (error) {
+      console.error("Error submitting data:", error);
+    }
   };
 
   return (
@@ -125,8 +174,8 @@ function EditSet() {
             </div>
           </div>
           <form
-            onSubmit={submitImage}
-            className="mt-[10px] rounded-md bg-white w-full h-full pt-[20px] text-[14px] "
+            className="mt-[10px] rounded-md bg-white w-full h-full pt-[20px] text-[14px]"
+            onSubmit={handleSubmit}
           >
             <div className="hidden md:flex w-full h-full">
               <div className="w-1/2 h-full text-black text-[14px] font-medium">
@@ -139,11 +188,11 @@ function EditSet() {
                     {selected1 ? (
                       <div className="flex items-center gap-2">
                         <img
-                          src={selected1.image}
+                          src={selected1.mt_image_name}
                           alt={selected1.name}
                           className="w-8 h-8 rounded"
                         />
-                        <span>{selected1.name}</span>
+                        <span>{selected1.mt_name}</span>
                       </div>
                     ) : (
                       <span className="text-black">Select single massage</span>
@@ -152,21 +201,22 @@ function EditSet() {
                   </div>
                   {isOpen1 && (
                     <div className="border border-[#DBDBDB] mt-2 rounded-lg shadow-lg bg-white">
-                      {mockData.map((massage) => (
+                      {getAvailableOptions(1).map((massage) => (
                         <div
-                          key={massage.id}
+                          key={massage.mt_id}
                           className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
                           onClick={() => {
                             setSelected1(massage);
                             setIsOpen1(false);
+                            fetchSingle(massage.mt_id);
                           }}
                         >
                           <img
-                            src={massage.image}
+                            src={massage.mt_image_name}
                             alt={massage.name}
                             className="w-8 h-8 rounded"
                           />
-                          <span>{massage.name}</span>
+                          <span>{massage.mt_name}</span>
                         </div>
                       ))}
                     </div>
@@ -180,11 +230,11 @@ function EditSet() {
                     {selected2 ? (
                       <div className="flex items-center gap-2">
                         <img
-                          src={selected2.image}
+                          src={selected2.mt_image_name}
                           alt={selected2.name}
                           className="w-8 h-8 rounded"
                         />
-                        <span>{selected2.name}</span>
+                        <span>{selected2.mt_name}</span>
                       </div>
                     ) : (
                       <span className="text-black">Select single massage</span>
@@ -193,21 +243,22 @@ function EditSet() {
                   </div>
                   {isOpen2 && (
                     <div className="border border-[#DBDBDB] mt-2 rounded-lg shadow-lg bg-white">
-                      {mockData.map((massage) => (
+                      {getAvailableOptions(2).map((massage) => (
                         <div
-                          key={massage.id}
+                          key={massage.mt_id}
                           className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
                           onClick={() => {
                             setSelected2(massage);
                             setIsOpen2(false);
+                            fetchSingle(massage.mt_id);
                           }}
                         >
                           <img
-                            src={massage.image}
+                            src={massage.mt_image_name}
                             alt={massage.name}
                             className="w-8 h-8 rounded"
                           />
-                          <span>{massage.name}</span>
+                          <span>{massage.mt_name}</span>
                         </div>
                       ))}
                     </div>
@@ -221,11 +272,11 @@ function EditSet() {
                     {selected3 ? (
                       <div className="flex items-center gap-2">
                         <img
-                          src={selected3.image}
+                          src={selected3.mt_image_name}
                           alt={selected3.name}
                           className="w-8 h-8 rounded"
                         />
-                        <span>{selected3.name}</span>
+                        <span>{selected3.mt_name}</span>
                       </div>
                     ) : (
                       <span className="text-black">Select single massage</span>
@@ -234,21 +285,22 @@ function EditSet() {
                   </div>
                   {isOpen3 && (
                     <div className="border border-[#DBDBDB] mt-2 rounded-lg shadow-lg bg-white">
-                      {mockData.map((massage) => (
+                      {getAvailableOptions(3).map((massage) => (
                         <div
-                          key={massage.id}
+                          key={massage.mt_id}
                           className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
                           onClick={() => {
                             setSelected3(massage);
                             setIsOpen3(false);
+                            fetchSingle(massage.mt_id);
                           }}
                         >
                           <img
-                            src={massage.image}
+                            src={massage.mt_image_name}
                             alt={massage.name}
                             className="w-8 h-8 rounded"
                           />
-                          <span>{massage.name}</span>
+                          <span>{massage.mt_name}</span>
                         </div>
                       ))}
                     </div>
@@ -259,9 +311,14 @@ function EditSet() {
                 <p className="mb-[10px] text-black">Name Set of Massage</p>
                 <input
                   type="text"
-                  value={namesetmassage}
-                  onChange={(e) => setNamesetmassage(e.target.value)}
-                  name="namemassage"
+                  value={setdata.ms_name}
+                  onChange={(e) =>
+                    setSetdata((prevState) => ({
+                      ...prevState,
+                      ms_name: e.target.value,
+                    }))
+                  }
+                  name="ms_name"
                   placeholder="Name Massage"
                   className="h-[40px] w-full rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
@@ -269,9 +326,14 @@ function EditSet() {
                 <p className="mt-[15px] mb-[10px] text-black">Detail</p>
                 <textarea
                   type="text"
-                  value={detailmassage}
-                  onChange={(e) => setDetailmassage(e.target.value)}
-                  name="detailmassage"
+                  value={setdata.ms_detail}
+                  onChange={(e) =>
+                    setSetdata((prevState) => ({
+                      ...prevState,
+                      ms_detail: e.target.value,
+                    }))
+                  }
+                  name="ms_detail"
                   className="w-full pl-2 pt-2 rounded-md bg-[#DBDBDB] text-black focus:outline-none
                   focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
                   id=""
@@ -283,161 +345,6 @@ function EditSet() {
                   Save
                 </button>
               </div>
-            </div>
-            <div className="block md:hidden w-full h-full text-black text-[14px] font-medium">
-              <p className="mb-[10px]">Select Single Massage</p>
-              <div className="w-full">
-                <div
-                  className="border-2 border-dashed border-[#DBDBDB] rounded-lg px-4 py-5 flex justify-between items-center cursor-pointer"
-                  onClick={() => setIsOpen1(!isOpen1)}
-                >
-                  {selected1 ? (
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={selected1.image}
-                        alt={selected1.name}
-                        className="w-8 h-8 rounded"
-                      />
-                      <span>{selected1.name}</span>
-                    </div>
-                  ) : (
-                    <span className="text-black">Select single massage</span>
-                  )}
-                  <ChevronDown className="w-5 h-5 text-black" />
-                </div>
-                {isOpen1 && (
-                  <div className="border border-gray-300 mt-2 rounded-lg shadow-lg bg-white">
-                    {mockData.map((massage) => (
-                      <div
-                        key={massage.id}
-                        className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
-                        onClick={() => {
-                          setSelected1(massage);
-                          setIsOpen1(false);
-                        }}
-                      >
-                        <img
-                          src={massage.image}
-                          alt={massage.name}
-                          className="w-8 h-8 rounded"
-                        />
-                        <span>{massage.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className="my-3 w-full">
-                <div
-                  className="border-2 border-dashed border-[#DBDBDB] rounded-lg px-4 py-5 flex justify-between items-center cursor-pointer"
-                  onClick={() => setIsOpen2(!isOpen2)}
-                >
-                  {selected2 ? (
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={selected2.image}
-                        alt={selected2.name}
-                        className="w-8 h-8 rounded"
-                      />
-                      <span>{selected2.name}</span>
-                    </div>
-                  ) : (
-                    <span className="text-black">Select single massage</span>
-                  )}
-                  <ChevronDown className="w-5 h-5 text-black" />
-                </div>
-                {isOpen2 && (
-                  <div className="border border-gray-300 mt-2 rounded-lg shadow-lg bg-white">
-                    {mockData.map((massage) => (
-                      <div
-                        key={massage.id}
-                        className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
-                        onClick={() => {
-                          setSelected2(massage);
-                          setIsOpen2(false);
-                        }}
-                      >
-                        <img
-                          src={massage.image}
-                          alt={massage.name}
-                          className="w-8 h-8 rounded"
-                        />
-                        <span>{massage.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div className="my-3 w-full">
-                <div
-                  className="border-2 border-dashed border-[#DBDBDB] rounded-lg px-4 py-5 flex justify-between items-center cursor-pointer"
-                  onClick={() => setIsOpen3(!isOpen3)}
-                >
-                  {selected3 ? (
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={selected3.image}
-                        alt={selected3.name}
-                        className="w-8 h-8 rounded"
-                      />
-                      <span>{selected3.name}</span>
-                    </div>
-                  ) : (
-                    <span className="text-black">Select single massage</span>
-                  )}
-                  <ChevronDown className="w-5 h-5 text-black" />
-                </div>
-                {isOpen3 && (
-                  <div className="border border-gray-300 mt-2 rounded-lg shadow-lg bg-white">
-                    {mockData.map((massage) => (
-                      <div
-                        key={massage.id}
-                        className="p-2 flex items-center gap-2 cursor-pointer hover:bg-gray-100"
-                        onClick={() => {
-                          setSelected3(massage);
-                          setIsOpen3(false);
-                        }}
-                      >
-                        <img
-                          src={massage.image}
-                          alt={massage.name}
-                          className="w-8 h-8 rounded"
-                        />
-                        <span>{massage.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <p className="mt-[15px] mb-[10px] text-black">Name Massage</p>
-              <input
-                type="text"
-                value={namesetmassage}
-                onChange={(e) => setNamesetmassage(e.target.value)}
-                name="namemassage"
-                placeholder="Name Massage"
-                className="h-[40px] w-full rounded-md pl-2 focus:outline-none bg-[#DBDBDB] text-black
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-              />
-              <p className="mt-[15px] mb-[10px] text-black">Detail</p>
-              <textarea
-                className="w-full pl-2 pt-2 rounded-md bg-[#DBDBDB] text-black focus:outline-none
-                focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
-                type="text"
-                value={detailmassage}
-                onChange={(e) => setDetailmassage(e.target.value)}
-                name="detailmassage"
-                id=""
-                rows="8"
-                placeholder="Tell about massage"
-              ></textarea>
-
-              <button
-                type="submit"
-                className="text-[18px] h-[40px] w-full rounded-lg mt-[40px] bg-[#C0A172] text-center font-medium text-white hover:bg-[#C0A172]"
-              >
-                Save
-              </button>
             </div>
           </form>
         </div>
