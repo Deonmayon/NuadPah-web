@@ -2,57 +2,51 @@ import React, { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import IconCom from "../components/IconCom";
 import { useNavigate, useParams, Link } from "react-router-dom";
+import axios from "axios";
 
 function EditReport() {
   const { id } = useParams();
-
-  const [namereport, setNamereport] = useState("");
-  const [namereporter, setNamereporter] = useState("");
-  const [time, setTime] = useState("");
-  const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
+  const [reportData, setReportData] = useState([]);
+
+  const api = `${import.meta.env.VITE_API_URL}`;
+
+  const [fetchTrigger, setFetchTrigger] = useState(false);
 
   const navigate = useNavigate();
 
   // Mockup user data
   useEffect(() => {
-    // Simulate fetching user data
-    const mockUserData = {
-      id: 1,
-      namereport: " Have a problem",
-      namereporter: "John Doe",
-      time: "23:28, 24/01/2022",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      status: "processing",
+    const fetchReport = async () => {
+      try {
+        const res = await axios.post(`${api}/admin/report/${id}`);
+        console.log("Report Data", res.data);
+        setReportData(res.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
-    setNamereport(mockUserData.namereport);
-    setNamereporter(mockUserData.namereporter);
-    setTime(mockUserData.time);
-    setDescription(mockUserData.description);
-    setStatus(mockUserData.status);
-  }, [id]);
+    fetchReport();
+  }, [fetchTrigger]);
 
   const handleUpdate = (e) => {
     e.preventDefault();
 
-    const updateData = {
-      username,
-      email,
-      role,
+    const updatedData = {
+      status_index: parseInt(status),  // Just send the numeric value
     };
 
-    if (password.trim() !== "") {
-      updateData.password = password; // Include password only if it's not empty
-    }
-
     axios
-      .put("http://localhost:3002/update/" + id, updateData)
+      .put(`${api}/admin/update-report-status/${id}`, updatedData)
       .then((res) => {
-        window.location.reload();
+        console.log("Report updated successfully", res.data);
+        setFetchTrigger((prev) => !prev);
+        navigate("/reportmanage");
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        console.error("Error updating report:", error);
+      });
   };
 
   return (
@@ -73,26 +67,26 @@ function EditReport() {
             </Link>
             <div className="ml-[15px] flex flex-col justify-evenly h-full">
               <p className="text-[#C0A172] font-medium text-[16px]">
-                00001-{namereport}
+                {reportData.rep_id}-{reportData.firstname} {reportData.lastname}
               </p>
               <p className="text-black font-medium text-[20px]">Edit Report</p>
             </div>
           </div>
           <div className="mt-[10px] rounded-md bg-white w-full -h-[760px] pt-[20px] text-[14px]">
             <p className="mt-[10px] text-black font-medium text-[14px]">
-              {namereport}
+              {reportData.title}
             </p>
             <p className="mt-[10px] text-black font-medium text-[14px]">
-              {namereporter}
+              {reportData.firstname} {reportData.lastname}
             </p>
             <p className="mt-[10px] text-black font-medium text-[14px]">
-              {time}
+              {reportData.dateTime ?? "2023-10-01 12:00:00"}
             </p>
             <p className="mt-[10px] text-black font-medium text-[14px]">
               Detail Report
             </p>
             <p className="mt-[10px] text-black font-medium text-[14px]">
-              {description}
+              {reportData.detail}
             </p>
             <select
               value={status}
@@ -101,9 +95,10 @@ function EditReport() {
               className="mt-[10px] h-[40px] w-full rounded-md px-2 bg-[#DBDBDB] text-black focus:outline-none
                 focus:ring-0 focus:ring-[#DBDBDB] focus:ring-offset-2 focus:ring-offset-[#C0A172]"
             >
-              <option value="processing">processing</option>
-              <option value="pending">pending</option>
-              <option value="completed">completed</option>
+              <option value="0">Pending</option>
+              <option value="1">Processing</option>
+              <option value="2">Completed</option>
+              <option value="3">Cancelled</option>
             </select>
             <button
               type="submit"

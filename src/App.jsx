@@ -22,7 +22,7 @@ function App() {
         <Route path="/setofmanage" element={<SetofManage />}></Route>
         <Route path="/createsingle" element={<CreateSingle />}></Route>
         <Route path="/edituser/:id" element={<EditUser />}></Route>
-        <Route path="/editreport" element={<EditReport />}></Route>
+        <Route path="/editreport/:id" element={<EditReport />}></Route>
         <Route
           path="/editsinglemassage/:id"
           element={<EditSingleMassge />}
