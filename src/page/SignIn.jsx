@@ -1,30 +1,49 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Nav from "../components/Nav";
 
-function Login() {
-  const [values, setValue] = useState({
+import { useDispatch } from "react-redux";
+
+import { signInHandler } from "../api/auth";
+
+function SignIn() {
+  const [userData, setUserData] = useState({
     username: "",
     password: "",
   });
 
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const handleInput = (event) => {
-    setValue((prev) => ({
+    setUserData((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Mock login logic
-    if (values.username === "admin" && values.password === "password") {
-      alert("Login successful!");
-      navigate("/singlemanage");
-    } else {
-      alert("Invalid username or password");
+    try {
+      const { username, password } = userData;
+
+      const res = await signInHandler(username, password);
+
+      dispatch({
+        type: "SIGNIN",
+        payload: res.data,
+      });
+      // // Mock SignIn logic
+      // if (values.username === "admin" && values.password === "password") {
+      //   alert("SignIn successful!");
+      //   navigate("/singlemanage");
+      // } else {
+      //   alert("Invalid username or password");
+      // }}
+    } catch (error) {
+      console.error("Error sign in:", error);
+      alert("อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง");
     }
   };
 
@@ -35,8 +54,10 @@ function Login() {
         className="mx-auto max-w-[1250px] bg-[#C0A172] pt-[80px]"
       >
         <div className="mx-auto rounded-md bg-white h-[420px] w-[420px] flex flex-col items-center">
-          <p className="text-[#C0A172] font-semibold text-[35px] mt-[45px]">Login</p>
-          
+          <p className="text-[#C0A172] font-semibold text-[35px] mt-[45px]">
+            เข้าสู่ระบบ
+          </p>
+
           <input
             type="text"
             className="h-[40px] w-[340px] mt-[20px] rounded-md pl-2 bg-[#DBDBDB] text-black focus:outline-none
@@ -57,7 +78,7 @@ function Login() {
             type="submit"
             className="h-[40px] w-[340px] rounded-3xl mt-[40px] bg-[#C0A172] text-center font-medium text-white"
           >
-            Log in
+            เข้าสู่ระบบ
           </button>
         </div>
       </form>
@@ -65,4 +86,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignIn;
